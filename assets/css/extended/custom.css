@@ -1,0 +1,125 @@
+/* ===== Terminal-inspired theme for PaperMod =====
+   Dark background, single phosphor-green accent, monospace headings.
+   Restrained on purpose: prose stays in a normal readable font. */
+
+:root {
+    --term-bg: #0d1117;        /* near-black, slightly blue */
+    --term-bg-soft: #161b22;   /* cards, code blocks */
+    --term-border: #21262d;
+    --term-text: #c9d1d9;      /* body text: light grey, not pure white */
+    --term-dim: #8b949e;       /* muted text */
+    --term-green: #3fb950;     /* the one accent */
+    --term-green-dim: #2ea043;
+}
+
+/* Force the theme to dark and apply our palette */
+.dark, :root {
+    --theme: var(--term-bg);
+    --entry: var(--term-bg-soft);
+    --primary: var(--term-text);
+    --secondary: var(--term-dim);
+    --tertiary: var(--term-border);
+    --content: var(--term-text);
+    --code-bg: var(--term-bg-soft);
+    --border: var(--term-border);
+}
+
+body {
+    background: var(--term-bg);
+    color: var(--term-text);
+}
+
+/* Headings + code in monospace, prose stays default */
+.post-title,
+.entry-header h2,
+h1, h2, h3, h4,
+.site-title,
+nav .logo a {
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    letter-spacing: -0.5px;
+}
+
+/* Green accent on headings */
+.post-title,
+.post-content h2,
+.post-content h3 {
+    color: var(--term-green);
+}
+
+/* A subtle prompt mark before top-level content headings */
+.post-content h2::before {
+    content: "$ ";
+    color: var(--term-green-dim);
+    opacity: 0.7;
+}
+
+/* Links: green, underline on hover */
+a,
+.post-content a {
+    color: var(--term-green);
+    text-decoration: none;
+}
+a:hover,
+.post-content a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Inline code + code blocks */
+code {
+    font-family: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+.post-content code:not(pre code) {
+    background: var(--term-bg-soft);
+    color: var(--term-green);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    border: 1px solid var(--term-border);
+}
+.post-content pre {
+    background: var(--term-bg-soft) !important;
+    border: 1px solid var(--term-border);
+    border-radius: 6px;
+}
+
+/* Tables: the course schedule */
+.post-content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.post-content table th {
+    font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+    color: var(--term-green);
+    text-align: left;
+    border-bottom: 2px solid var(--term-border);
+}
+.post-content table td,
+.post-content table th {
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid var(--term-border);
+}
+.post-content table tr:hover td {
+    background: var(--term-bg-soft);
+}
+
+/* Site header */
+.nav {
+    border-bottom: 1px solid var(--term-border);
+}
+.site-title, nav .logo a {
+    color: var(--term-green) !important;
+}
+
+/* Blockquotes: the callout/note boxes in the guide */
+.post-content blockquote {
+    border-left: 3px solid var(--term-green-dim);
+    background: var(--term-bg-soft);
+    color: var(--term-dim);
+    border-radius: 0 4px 4px 0;
+}
+
+/* A soft green selection colour */
+::selection {
+    background: rgba(63, 185, 80, 0.3);
+    color: #fff;
+}

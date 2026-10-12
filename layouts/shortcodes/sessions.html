@@ -1,0 +1,19 @@
+{{ $base := .Page.RelPermalink }}
+<table>
+  <thead><tr><th>#</th><th>Slides</th><th>Cheat sheet</th><th>Lab</th></tr></thead>
+  <tbody>
+  {{ range $i, $s := .Page.Params.sessions }}
+    <tr>
+      <td>{{ $i }}</td>
+      <td><a href="{{ $base }}slides/{{ $s.file }}.pdf">{{ $s.title }}</a></td>
+      <td>{{ with $s.cheatsheet }}<a href="{{ $base }}cheatsheets/{{ . }}">PDF</a>{{ else }}–{{ end }}</td>
+      <td>
+        {{ if $s.lab }}
+          {{ if $s.released }}<code>{{ $s.lab }}</code>
+          {{ else }}<span style="opacity:0.5">not yet released</span>{{ end }}
+        {{ else }}–{{ end }}
+      </td>
+    </tr>
+  {{ end }}
+  </tbody>
+</table>

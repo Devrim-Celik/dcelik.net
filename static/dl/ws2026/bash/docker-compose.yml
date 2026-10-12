@@ -1,0 +1,65 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-bash-net
+    ports:
+      - "127.0.0.1:10100:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      bash-trainer:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-bash:${TAG}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-bash-net
+    ports:
+      - "127.0.0.1:10101:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  bash-trainer:
+    image: dc3lik/osl-bash-trainer:${TAG}
+    container_name: bash-trainer
+    hostname: bash-trainer
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    networks:
+      - lab-bash-net
+    ports:
+      - "127.0.0.1:10110:22"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+
+networks:
+  lab-bash-net:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:
+

@@ -1,0 +1,5 @@
+baseURL = 'https://dcelik.net/'
+title = 'D. Celik'
+theme = 'PaperMod'
+[params]
+  defaultTheme = "dark"
