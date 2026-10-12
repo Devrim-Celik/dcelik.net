@@ -10,7 +10,7 @@ Everything runs inside Docker on your Kali VM. You manage the labs with a single
 Download the script into a folder of your choice on your Kali VM:
 ```bash
 # kali
-mkdir -p ~/ehlabs && cd ~/ehlabs
+mkdir -p ~/foocs && cd ~/foocs
 curl -fsSLO https://dcelik.net/dl/ws2026/manage.sh
 chmod +x manage.sh
 ```
