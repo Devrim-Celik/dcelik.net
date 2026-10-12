@@ -27,7 +27,7 @@ Open a terminal **inside the Kali VM** and run:
 ```bash
 # kali
 sudo apt update
-sudo apt install -y docker.io docker-compose-plugin
+sudo apt install -y docker.io docker-compose
 sudo usermod -aG docker $USER
 newgrp docker
 sudo systemctl enable docker --now
