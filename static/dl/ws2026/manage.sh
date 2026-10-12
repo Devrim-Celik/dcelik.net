@@ -127,14 +127,118 @@ ensure_compose() {
     esac                                                                                                                                                                                                                                      
 }                                                                                                                                                                                                                                             
 
-# ── commands ──────────────────────────────────────────────────────────────                                                                                                                                                                  
+# ── commands ──────────────────────────────────────────────────────────────
 
-cmd_start() {                                                                                                                                                                                                                                 
-    local lab="" refresh=0                                                                                                                                                                                                                    
-    while [[ $# -gt 0 ]]; do                                                                                                                                                                                                                  
-        case "$1" in                                                                                                                                                                                                                          
-            --refresh) refresh=1 ;;                                                                                                                                                                                                           
-            *)         lab="$1"  ;;                                                                                                                                                                                                           
-        esac                                                                                                                                                                                                                                  
-        shift                                                                                                                                                                                                                                 
-    done                                                                                                                                                                                                                                      
+cmd_start() {
+    local lab="" refresh=0
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --refresh) refresh=1 ;;
+            *)         lab="$1"  ;;
+        esac
+        shift
+    done
+
+    [[ -n "$lab" ]] || die "usage: $0 start [--refresh] <lab>"
+    valid_lab "$lab"  || die "unknown lab '$lab' -- available: ${LABS[*]}"
+
+    for other in "${LABS[@]}"; do
+        if [[ "$other" != "$lab" ]] && is_running "$other"; then
+            die "lab '$other' is still running -- stop it first with: $0 stop $other"
+        fi
+    done
+
+    ensure_compose "$lab" "$refresh"
+    compose "$lab" up -d
+
+    local ap; ap=$(attacker_port "$lab")
+    echo ""
+    print_env_header
+    printf "\n  ${BLD}attacker${RST}   ssh -p %s attacker@localhost   (attacker:attacker)\n" "$ap"
+    printf "  ${BLD}assistant${RST}  ssh -p %s student@localhost    (student:student)\n\n"  "$((ap + 1))"
+}
+
+cmd_stop() {
+    local lab="${1:-}"
+    [[ -n "$lab" ]] || die "usage: $0 stop <lab>"
+    valid_lab "$lab" || die "unknown lab '$lab' -- available: ${LABS[*]}"
+
+    if [[ ! -f "$(cache_path "$lab")" ]]; then
+        printf "  Compose file not cached -- fetching to stop cleanly..."
+        local rc=0; fetch_compose "$lab" || rc=$?
+        if [[ $rc -ne 0 ]]; then
+            echo ""
+            echo ""
+            echo -e "  ${YLW}Could not fetch compose file. Stop the containers manually:${RST}"
+            echo "    docker stop attacker lab-assistant"
+            echo "    docker rm   attacker lab-assistant"
+            echo ""
+            exit 1
+        fi
+        echo -e " ${GRN}done${RST}"
+    fi
+
+    compose "$lab" down
+}
+
+cmd_refresh() {
+    local lab="${1:-}"
+    [[ -n "$lab" ]] || die "usage: $0 refresh <lab>"
+    valid_lab "$lab" || die "unknown lab '$lab' -- available: ${LABS[*]}"
+    ensure_compose "$lab" 1
+}
+
+cmd_status() {
+    echo ""
+    print_env_header
+    echo ""
+    printf "  %-22s %s\n" "LAB" "STATUS"
+    printf "  %-22s %s\n" "---" "------"
+    for lab in "${LABS[@]}"; do
+        if [[ ! -f "$(cache_path "$lab")" ]]; then
+            printf "  %-22s ${DIM}not downloaded${RST}\n" "$lab"
+        elif is_running "$lab"; then
+            local ap; ap=$(attacker_port "$lab")
+            printf "  %-22s ${GRN}running${RST}  (attacker :%s  assistant :%s)\n" "$lab" "$ap" "$((ap + 1))"
+        else
+            printf "  %-22s ${DIM}stopped${RST}\n" "$lab"
+        fi
+    done
+    echo ""
+}
+
+cmd_clean() {
+    echo ""
+    for lab in "${LABS[@]}"; do
+        [[ -f "$(cache_path "$lab")" ]] || continue
+        compose "$lab" down --volumes 2>/dev/null || true
+    done
+    echo -e "${GRN}done${RST} -- all containers and volumes removed."
+    echo ""
+}
+
+# ── dispatch ──────────────────────────────────────────────────────────────
+
+usage() {
+    echo ""
+    echo -e "  ${BLD}usage:${RST} $0 <command> [options]"
+    echo ""
+    echo "  start [--refresh] <lab>   start a lab (fetches compose file if needed)"
+    echo "  stop  <lab>               stop a lab"
+    echo "  refresh <lab>             re-fetch a lab's compose file"
+    echo "  status                    show all labs and their state"
+    echo "  clean                     stop all labs and remove volumes"
+    echo ""
+    echo -e "  ${DIM}labs: ${LABS[*]}${RST}"
+    echo ""
+}
+
+case "${1:-}" in
+    start)   cmd_start   "${@:2}" ;;
+    stop)    cmd_stop    "${2:-}" ;;
+    refresh) cmd_refresh "${2:-}" ;;
+    status)  cmd_status  ;;
+    clean)   cmd_clean   ;;
+    *)       usage       ;;
+esac
+
