@@ -1,131 +1,131 @@
-#!/usr/bin/env bash                                                                                                                                                                                                                           
-set -euo pipefail                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                              
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"                                                                                                                                                                                          
-ENV_FILE="$ROOT/.env"                                                                                                                                                                                                                         
-LABS=(bash recon web web2 public-exploits lpe passwords pivoting)                                                                                                                                                                             
-BASE_URL="https://dcelik.net/dl"                                                                                                                                                                                                              
-COURSE_URL="https://dcelik.net/teaching/offensive-cybersecurity"                                                                                                                                                                              
-                                                                                                                                                                                                                                              
-GRN='\033[0;32m'; YLW='\033[1;33m'; BLD='\033[1m'; DIM='\033[2m'; RST='\033[0m'                                                                                                                                                               
-                                                                                                                                                                                                                                              
-die() { echo -e "${YLW}error:${RST} $*" >&2; exit 1; }                                                                                                                                                                                        
-                                                                                                                                                                                                                                              
-# ── .env / first-run setup ────────────────────────────────────────────────                                                                                                                                                                  
-                                                                                                                                                                                                                                              
-read_env() {                                                                                                                                                                                                                                  
-    local key="$1"                                                                                                                                                                                                                            
-    grep -E "^${key}=" "$ENV_FILE" 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"'                                                                                                                                                           
-}                                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                              
-setup_env() {                                                                                                                                                                                                                                 
-    echo ""                                                                                                                                                                                                                                   
-    echo -e "  ${BLD}First-time setup${RST}"                                                                                                                                                                                                  
-    echo ""                                                                                                                                                                                                                                   
-    echo "  Your instructor announced a cohort tag for this course."                                                                                                                                                                          
-    echo ""                                                                                                                                                                                                                                   
-    local input_tag input_id                                                                                                                                                                                                                  
-    while true; do                                                                                                                                                                                                                            
-        read -rp "  Cohort tag:  " input_tag                                                                                                                                                                                                  
-        if echo "$input_tag" | grep -qE '^(ws|ss)[0-9]{4}$'; then                                                                                                                                                                             
-            break                                                                                                                                                                                                                             
-        fi                                                                                                                                                                                                                                    
-        echo "  Invalid format -- expected ws2026 or ss2026."                                                                                                                                                                                 
-    done                                                                                                                                                                                                                                      
-    read -rp "  Student ID:  " input_id                                                                                                                                                                                                       
-    echo ""                                                                                                                                                                                                                                   
-    [[ -n "$input_id" ]] || die "student ID cannot be empty"                                                                                                                                                                                  
-    printf 'TAG=%s\nSTUDENT_ID=%s\n' "$input_tag" "$input_id" > "$ENV_FILE"                                                                                                                                                                   
-    echo -e "  Saved to .env. Edit it any time to change these values."                                                                                                                                                                       
-    echo ""                                                                                                                                                                                                                                   
-}                                                                                                                                                             
-                                                                                                                                                                                                                                              
-if [[ ! -f "$ENV_FILE" ]]; then                                                                                                                                                                                                               
-    setup_env                                                                                                                                                                                                                                 
-fi                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                              
-TAG=$(read_env TAG)                                                                                                                                                                                                                           
-STUDENT_ID=$(read_env STUDENT_ID)                                                                                                                                                                                                             
-                                                                                                                                                                                                                                              
-[[ -n "$TAG"        ]] || die ".env is missing TAG -- delete .env and run again to redo setup"                                                                                                                                                
-[[ -n "$STUDENT_ID" ]] || die ".env is missing STUDENT_ID -- delete .env and run again to redo setup"                                                                                                                                         
-                                                                                                                                                                                                                                              
-# ── helpers ───────────────────────────────────────────────────────────────                                                                                                                                                                  
-                                                                                                                                                                                                                                              
-attacker_port() {                                                                                                                                                                                                                             
-    case "$1" in                                                                                                                                                                                                                              
-        bash)            echo 10100 ;;                                                                                                                                                                                                        
-        recon)           echo 10200 ;;                                                                                                                                                                                                        
-        web)             echo 10300 ;;                                                                                                                                                                                                        
-        web2)            echo 10400 ;;                                                                                                                                                                                                        
-        public-exploits) echo 10500 ;;                                                                                                                                                                                                        
-        lpe)             echo 10600 ;;                                                                                                                                                                                                        
-        passwords)       echo 10700 ;;                                                                                                                                                                                                        
-        pivoting)        echo 10800 ;;                                                                                                                        
-        *)               return 1   ;;                                                                                                                        
-    esac                                                                                                                                                      
-}                                                                                                                                                             
+#!/usr/bin/env bash
+set -euo pipefail
 
-valid_lab() { attacker_port "$1" &>/dev/null; }                                                                                                               
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$ROOT/.env"
+LABS=(bash recon web web2 public-exploits lpe passwords pivoting)
+BASE_URL="https://dcelik.net/dl"
+COURSE_URL="https://dcelik.net/teaching/offensive-cybersecurity"
 
-cache_path() { echo "$ROOT/labs/$TAG/$1/docker-compose.yml"; }                                                                                                
+GRN='\033[0;32m'; YLW='\033[1;33m'; BLD='\033[1m'; DIM='\033[2m'; RST='\033[0m'
 
-compose() {                                                                                                                                                   
-    local lab="$1"; shift                                                                                                                                     
-    docker compose --env-file "$ENV_FILE" -f "$(cache_path "$lab")" "$@"                                                                                      
-}                                                                                                                                                             
+die() { echo -e "${YLW}error:${RST} $*" >&2; exit 1; }
 
-is_running() {                                                                                                                                                
-    local lab="$1"                                                                                                                                            
-    [[ -f "$(cache_path "$lab")" ]] || return 1                                                                                                               
-    compose "$lab" ps -q 2>/dev/null | grep -q .                                                                                                              
-}                                                                                                                                                             
+# ── .env / first-run setup ────────────────────────────────────────────────
 
-print_env_header() {                                                                                                                                                                                                                          
-    printf "  ${DIM}cohort${RST}     %s\n" "$TAG"                                                                                                                                                                                             
-    printf "  ${DIM}student${RST}    %s\n" "$STUDENT_ID"                                                                                                                                                                                      
-}                                                                                                                                                                                                                                             
+read_env() {
+    local key="$1"
+    grep -E "^${key}=" "$ENV_FILE" 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"'
+}
 
-# returns: 0 success  2 network error  3 not released (404)                                                                                                                                                                                   
-fetch_compose() {                                                                                                                                                                                                                             
-    local lab="$1"                                                                                                                                                                                                                            
-    local url="${BASE_URL}/${TAG}/${lab}/docker-compose.yml"                                                                                                                                                                                  
-    local dest; dest="$(cache_path "$lab")"                                                                                                                                                                                                   
-    mkdir -p "$(dirname "$dest")"                                                                                                                                                                                                             
+setup_env() {
+    echo ""
+    echo -e "  ${BLD}First-time setup${RST}"
+    echo ""
+    echo "  Your instructor announced a cohort tag for this course."
+    echo ""
+    local input_tag input_id
+    while true; do
+        read -rp "  Cohort tag:  " input_tag
+        if echo "$input_tag" | grep -qE '^(ws|ss)[0-9]{4}$'; then
+            break
+        fi
+        echo "  Invalid format -- expected ws2026 or ss2026."
+    done
+    read -rp "  Student ID:  " input_id
+    echo ""
+    [[ -n "$input_id" ]] || die "student ID cannot be empty"
+    printf 'TAG=%s\nSTUDENT_ID=%s\n' "$input_tag" "$input_id" > "$ENV_FILE"
+    echo -e "  Saved to .env. Edit it any time to change these values."
+    echo ""
+}
 
-    local http_code curl_exit=0                                                                                                                                                                                                               
-    http_code=$(curl -sL --max-time 15 -w "%{http_code}" -o "$dest" "$url" 2>/dev/null) || curl_exit=$?                                                                                                                                       
+if [[ ! -f "$ENV_FILE" ]]; then
+    setup_env
+fi
 
-    if [[ $curl_exit -ne 0 ]]; then                                                                                                                                                                                                           
-        rm -f "$dest"; return 2                                                                                                                                                                                                               
-    fi                                                                                                                                                                                                                                        
-    if [[ "$http_code" == "404" ]]; then                                                                                                                                                                                                      
-        rm -f "$dest"; return 3                                                                                                                                                                                                               
-    fi                                                                                                                                                                                                                                        
-    if [[ "${http_code:0:1}" != "2" ]]; then                                                                                                                                                                                                  
-        rm -f "$dest"; return 2                                                                                                                                                                                                               
-    fi                                                                                                                                                                                                                                        
-}                                                                                                                                                                                                                                             
+TAG=$(read_env TAG)
+STUDENT_ID=$(read_env STUDENT_ID)
 
-ensure_compose() {                                                                                                                                                                                                                            
-    local lab="$1" force="${2:-0}"                                                                                                                                                                                                            
-    [[ -f "$(cache_path "$lab")" && "$force" -eq 0 ]] && return 0                                                                                                                                                                             
+[[ -n "$TAG"        ]] || die ".env is missing TAG -- delete .env and run again to redo setup"
+[[ -n "$STUDENT_ID" ]] || die ".env is missing STUDENT_ID -- delete .env and run again to redo setup"
 
-    printf "  Fetching compose file for ${BLD}%s${RST}..." "$lab"                                                                                                                                                                             
-    local rc=0; fetch_compose "$lab" || rc=$?                                                                                                                                                                                                 
-    case $rc in                                                                                                                                                                                                                               
-        0) echo -e " ${GRN}done${RST}" ;;                                                                                                                                                                                                     
-        3) echo ""                                                                                                                                                                                                                            
-           echo ""                                                                                                                                                                                                                            
-           echo -e "  ${YLW}Lab '$lab' is not available for cohort ${TAG}.${RST}"                                                                                                                                                             
-           echo -e "  See released labs at: ${COURSE_URL}/${TAG}/"                                                                                                                                                                            
-           echo ""; exit 1 ;;                                                                                                                                                                                                                 
-        *) echo ""                                                                                                                                                                                                                            
-           echo ""                                                                                                                                                                                                                            
-           echo -e "  ${YLW}Could not reach dcelik.net -- check your internet connection.${RST}"                                                                                                                                              
-           echo ""; exit 1 ;;                                                                                                                                                                                                                 
-    esac                                                                                                                                                                                                                                      
-}                                                                                                                                                                                                                                             
+# ── helpers ───────────────────────────────────────────────────────────────
+
+attacker_port() {
+    case "$1" in
+        bash)            echo 10100 ;;
+        recon)           echo 10200 ;;
+        web)             echo 10300 ;;
+        web2)            echo 10400 ;;
+        public-exploits) echo 10500 ;;
+        lpe)             echo 10600 ;;
+        passwords)       echo 10700 ;;
+        pivoting)        echo 10800 ;;
+        *)               return 1   ;;
+    esac
+}
+
+valid_lab() { attacker_port "$1" &>/dev/null; }
+
+cache_path() { echo "$ROOT/labs/$TAG/$1/docker-compose.yml"; }
+
+compose() {
+    local lab="$1"; shift
+    docker compose --env-file "$ENV_FILE" -f "$(cache_path "$lab")" "$@"
+}
+
+is_running() {
+    local lab="$1"
+    [[ -f "$(cache_path "$lab")" ]] || return 1
+    compose "$lab" ps -q 2>/dev/null | grep -q .
+}
+
+print_env_header() {
+    printf "  ${DIM}cohort${RST}     %s\n" "$TAG"
+    printf "  ${DIM}student${RST}    %s\n" "$STUDENT_ID"
+}
+
+# returns: 0 success  2 network error  3 not released (404)
+fetch_compose() {
+    local lab="$1"
+    local url="${BASE_URL}/${TAG}/${lab}/docker-compose.yml"
+    local dest; dest="$(cache_path "$lab")"
+    mkdir -p "$(dirname "$dest")"
+
+    local http_code curl_exit=0
+    http_code=$(curl -sL --max-time 15 -w "%{http_code}" -o "$dest" "$url" 2>/dev/null) || curl_exit=$?
+
+    if [[ $curl_exit -ne 0 ]]; then
+        rm -f "$dest"; return 2
+    fi
+    if [[ "$http_code" == "404" ]]; then
+        rm -f "$dest"; return 3
+    fi
+    if [[ "${http_code:0:1}" != "2" ]]; then
+        rm -f "$dest"; return 2
+    fi
+}
+
+ensure_compose() {
+    local lab="$1" force="${2:-0}"
+    [[ -f "$(cache_path "$lab")" && "$force" -eq 0 ]] && return 0
+
+    printf "  Fetching compose file for ${BLD}%s${RST}..." "$lab"
+    local rc=0; fetch_compose "$lab" || rc=$?
+    case $rc in
+        0) echo -e " ${GRN}done${RST}" ;;
+        3) echo ""
+           echo ""
+           echo -e "  ${YLW}Lab '$lab' is not available for cohort ${TAG}.${RST}"
+           echo -e "  See released labs at: ${COURSE_URL}/${TAG}/"
+           echo ""; exit 1 ;;
+        *) echo ""
+           echo ""
+           echo -e "  ${YLW}Could not reach dcelik.net -- check your internet connection.${RST}"
+           echo ""; exit 1 ;;
+    esac
+}
 
 # ── commands ──────────────────────────────────────────────────────────────
 
