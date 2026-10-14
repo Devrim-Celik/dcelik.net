@@ -6,7 +6,10 @@
     <tr>
       <td>{{ $i }}</td>
       <td><a href="{{ $base }}slides/{{ $s.file }}.pdf">{{ $s.title }}</a></td>
-      <td>{{ with $s.cheatsheet }}<a href="{{ $base }}cheatsheets/{{ . }}">PDF</a>{{ else }}–{{ end }}</td>
+      <td>
+        {{ if $s.cheatsheet }}<a href="{{ $base }}cheatsheets/{{ $s.file }}.pdf">PDF</a>
+        {{ else }}–{{ end }}
+      </td>
       <td>
         {{ if $s.lab }}
           {{ if $s.released }}<code>{{ $s.lab }}</code>
@@ -17,7 +20,7 @@
   {{ end }}
     <tr>
       <td colspan="4" style="text-align:center; border-top:2px solid var(--term-green-dim);">
-        <a href="{{ $base }}exam/">Mock Exam</a>
+        <a href="{{ $base }}exam/">Final Exam — format &amp; practice exam</a>
       </td>
     </tr>
   </tbody>
