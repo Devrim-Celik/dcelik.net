@@ -21,4 +21,6 @@ Winter term 2026/27 at University of Bonn.
 2. [Lab Guide](lab-guide/): running and navigating the labs
 3. [Lab Submissions](lab-submissions/): what to submit, deadlines, and how exam admission works
 
+**Tutor session:** the weekly time is decided by poll: [vote here](https://rallly.co/invite/fiIYQa6deLrK).
+
 {{< sessions >}}
