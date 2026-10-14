@@ -1,10 +1,13 @@
 ---
 title: "Environment Setup"
 ---
+[← Back to the course](../)
 
 A one-time setup to prepare your machine for the labs. You do this once at the start of the course. When you're done, continue to the [Lab Guide](../lab-guide/), which you'll use every week.
 
 The labs run inside Docker, on a Kali Linux virtual machine, inside VirtualBox. That means you don't need to install hacking tools or touch your real operating system - everything lives in the VM.
+
+![The lab environment: Docker runs the labs inside a Kali Linux VM, which runs in VirtualBox on your own computer.](/img/setup-architecture.png)
 
 ## 1. Install VirtualBox
 Download and install VirtualBox for your operating system from the [official downloads page](https://www.virtualbox.org/wiki/Downloads). If you need help, the [installation manual](https://www.virtualbox.org/manual/topics/installation.html#installation) has per-platform details.
@@ -22,11 +25,17 @@ Log in with the default credentials `kali` / `kali`.
 > ```
 > If the layout resets after a reboot, use the GUI route - the Xfce settings daemon can override the console setting.
 
+Open a terminal inside the Kali VM and run (this may take up to 30 minutes):
+```bash
+# kali
+sudo apt update && sudo apt upgrade -y
+```
+
+
 ## 3. Install Docker
 Open a terminal **inside the Kali VM** and run:
 ```bash
 # kali
-sudo apt update
 sudo apt install -y docker.io docker-compose
 sudo usermod -aG docker $USER
 newgrp docker

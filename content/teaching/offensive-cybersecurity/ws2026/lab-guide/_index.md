@@ -1,10 +1,13 @@
 ---
 title: "Lab Guide"
 ---
+[← Back to the course](../)
 
 How to download, run, and navigate the hands-on labs. This is your weekly reference. It assumes you've already done the one-time [Environment Setup](../setup/) (VirtualBox, Kali VM, Docker).
 
 Everything runs inside Docker on your Kali VM. You manage the labs with a single script, `manage.sh`, which you download once. It handles downloading each lab, starting it, and wiring in your details - you never edit compose files or type long Docker commands.
+
+![Inside the Kali VM, Docker runs the lab: the attacker-system and lab-assistant containers are reachable over SSH on your loopback interface, and some labs expose extra target ports.](/img/lab-connection-ports.png)
 
 ## 1. Get manage.sh (once)
 Download the script into a folder of your choice on your Kali VM:
@@ -39,7 +42,7 @@ Check what's running at any time:
 Each lab gives you a Kali **attacker** container - your base of operations. Connect to it over SSH (the exact port is printed when the lab starts):
 ```bash
 # kali
-ssh -p <attacker-port> attacker@localhost
+ssh -p <attacker-port> attacker@localhost	# password: attacker
 ```
 All tools are pre-installed. You can open as many SSH sessions to it as you like; each is an independent shell on the same container.
 
@@ -47,7 +50,7 @@ All tools are pre-installed. You can open as many SSH sessions to it as you like
 The objectives live inside a **lab-assistant** container, not in any file. Connect to it:
 ```bash
 # kali
-ssh -p <assistant-port> student@localhost
+ssh -p <assistant-port> student@localhost # password: student
 ```
 You're dropped straight into a menu. Arrow keys to navigate, Enter to select, Escape to go back, Ctrl-D to exit. Every lab's menu has:
 

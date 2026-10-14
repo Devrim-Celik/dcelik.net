@@ -123,3 +123,29 @@ code {
     background: rgba(63, 185, 80, 0.3);
     color: #fff;
 }
+
+.post-content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+}
+
+/* Lab submissions table: no mid-row wrapping on unit and deadline */
+.post-content table td:first-child,
+.post-content table th:first-child {
+    white-space: nowrap;        /* "Public Exploits & Passwords" stays on one line */
+    width: 1%;                  /* shrink first column to its content */
+}
+.post-content table td:last-child,
+.post-content table th:last-child {
+    white-space: nowrap;        /* dates never break */
+    width: 1%;
+}
+/* middle column takes all remaining width */
+.post-content table td:nth-child(2),
+.post-content table th:nth-child(2) {
+    width: 100%;
+}

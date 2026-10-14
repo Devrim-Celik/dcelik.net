@@ -16,6 +16,9 @@ sessions:
 ---
 Winter term 2026/27 at University of Bonn.
 
-New here? Start with [Environment Setup](../setup/), then the [Lab Guide](../lab-guide/).
+## Course Information
+1. [Environment Setup](setup/): prepare your machine (once)
+2. [Lab Guide](lab-guide/): running and navigating the labs
+3. [Lab Submissions](lab-submissions/): what to submit, deadlines, and how exam admission works
 
 {{< sessions >}}

@@ -3,3 +3,4 @@ title = 'D. Celik'
 theme = 'PaperMod'
 [params]
   defaultTheme = "dark"
+  ShowBreadCrumbs = true
