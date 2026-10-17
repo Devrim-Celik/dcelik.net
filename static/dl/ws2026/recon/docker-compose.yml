@@ -1,0 +1,63 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-recon-net
+    ports:
+      - "127.0.0.1:10200:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      target-recon:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-recon:${TAG:?run via manage.sh -- TAG not set}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-recon-net
+    ports:
+      - "127.0.0.1:10201:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  target-recon:
+    image: dc3lik/osl-recon:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-recon
+    hostname: target-recon
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    networks:
+      - lab-recon-net
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+networks:
+  lab-recon-net:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:
+
