@@ -5,7 +5,7 @@ term: "WS 2026/27"
 sessions:
   - { title: "Formalities & Setup",             file: "00_formaties-and-setup" }
   - { title: "Introduction to Ethical Hacking", file: "01_introduction-to-ethical-hacking" }
-  - { title: "Linux and Bash Basics",           file: "02_linux-and-bash-basics",         lab: "bash",            released: true,  cheatsheet: false }
+  - { title: "Linux and Bash Basics",           file: "02_linux-and-bash-basics",         lab: "bash",            released: true,  cheatsheet: true }
   - { title: "Reconnaissance",                  file: "03_reconnaissance",                lab: "recon",           released: false, cheatsheet: false }
   - { title: "Shells for the Ethical Hacker",   file: "04_shells-for-the-ethical-hacker",                                          cheatsheet: false }
   - { title: "Web Exploitation",                file: "05_web_exploitation",              lab: "web",             released: false, cheatsheet: false }
