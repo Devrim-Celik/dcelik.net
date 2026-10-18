@@ -149,3 +149,9 @@ code {
 .post-content table th:nth-child(2) {
     width: 100%;
 }
+
+/* ---- cheat sheet pages ---- */
+.post-content table{display:block;overflow-x:auto;border-collapse:collapse;width:100%;}
+.post-content th,.post-content td{border:1px solid #30363d;padding:.4rem .6rem;}
+.post-content thead th{background:#161b22;color:#3fb950;text-align:left;}
+.post-content tbody tr:nth-child(even){background:rgba(63,185,80,.06);}

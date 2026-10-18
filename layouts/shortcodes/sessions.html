@@ -7,7 +7,7 @@
       <td>{{ $i }}</td>
       <td><a href="{{ $base }}slides/{{ $s.file }}.pdf">{{ $s.title }}</a></td>
       <td>
-        {{ if $s.cheatsheet }}<a href="{{ $base }}cheatsheets/{{ $s.file }}.pdf">PDF</a>
+        {{ if $s.cheatsheet }}<a href="{{ $base }}cheatsheets/{{ $s.file }}/">view</a>
         {{ else }}–{{ end }}
       </td>
       <td>

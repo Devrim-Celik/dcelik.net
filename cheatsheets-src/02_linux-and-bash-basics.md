@@ -1,171 +1,181 @@
-# Linux File Structure
+# Linux & Bash Basics
+
+> The core Linux and shell commands you lean on constantly: navigating the
+> filesystem, manipulating files and streams, managing processes, and basic
+> networking. Everything else builds on these.
+
+## Linux File Structure
 
 | dir/file | usage |
 | -------- | ----- |
-| `/etc/hosts` | local "DNS" |
-| `/etc/passwd` | user config |
+| `/etc/hosts` | local "DNS" (static hostname → IP map) |
+| `/etc/passwd` | user accounts config |
 | `/etc/shadow` | password hashes |
-| `/home`  | user homes (for those that have homes) |
-| `/tmp`   | "temporary" files, usually located on RAM |
-| `.`      | current dir |
-| `..`     | parent dir |
-| `~`      | home dir of current user |
+| `/home` | user home directories |
+| `/tmp` | temporary files (often on RAM) |
+| `.` | current dir |
+| `..` | parent dir |
+| `~` | home dir of current user |
 
-# Bash Basics
+## Bash Basics
 
 | variable | usage |
 | -------- | ----- |
-| HOME     | used for ~ |
-| USER     | current username |
-| PATH     | paths for dirs with apps |
-| SHELL    | default shell |
-| PWD      | present working directory |
+| `HOME` | used for `~` |
+| `USER` | current username |
+| `PATH` | dirs searched for executables |
+| `SHELL` | default shell |
+| `PWD` | present working directory |
 
-> use `$<variable>` to reference them
+> reference a variable with `$<variable>`, e.g. `echo $HOME`
 
 | information command | usage |
 | ------------------- | ----- |
-| `man <command>`     | system's manual pager |
-| `<command> --help`  | internal manual |
-| `history`           | command history |
-| `file <file>`       | determine file type |
+| `man <command>` | system manual pager |
+| `<command> --help` | built-in usage summary |
+| `history` | command history |
+| `file <file>` | determine file type |
 
 | navigation command | usage |
 | ------------------ | ----- |
-| `pwd`              | present working directory |
-| `cd <dir>`         | change directory |
-| `ls [<dir>]`       | list content of dir |
-| `ls -la [<dir>]`   | ... with hidden files and detailed info |
+| `pwd` | present working directory |
+| `cd <dir>` | change directory |
+| `ls [<dir>]` | list contents of dir |
+| `ls -la [<dir>]` | ... with hidden files and detail |
 
 | management command | usage |
-| ------------------ | ------ |
-| `cp <src> <dst>`   | copy src to dst |
-| `mv <src> <dst>`   | move src to dst |
-| `rm <file>`        | remove file |
-| `rm -rf <file/dir>` | remove recursively with force (also dirs) |
-| `cat <file>`       | print file to standard output |
-| `more <file>`      | print with pager |
+| ------------------ | ----- |
+| `cp <src> <dst>` | copy src to dst |
+| `mv <src> <dst>` | move / rename |
+| `rm <file>` | remove file |
+| `rm -rf <file/dir>` | remove recursively, force (also dirs) |
+| `cat <file>` | print file to stdout |
+| `more <file>` | print with pager |
 
 | search command | usage |
 | -------------- | ----- |
-| `which <executable>` | locate path |
-| `grep "regex" <file>` | g/re/p: global, reg. ex., print; search for pattern in file |
-| `find <path> -name <filename>` | search recursively by name |
-| `find <path> -type <filetype>` | search recursively by type |
-| `find <path> -size <filesize>` | search recursively by size |
+| `which <executable>` | locate an executable in `PATH` |
+| `grep "<regex>" <file>` | search for a pattern in a file |
+| `find <path> -name <name>` | search recursively by name |
+| `find <path> -type <type>` | search recursively by type |
+| `find <path> -size <size>` | search recursively by size |
 
-**pipe**: `cat data.txt | grep "keyword"`
-- creates temporary storage to chain commands
+| shell syntax | meaning |
+| ------------ | ------- |
+| `<cmd> \| <cmd>` | pipe: feed stdout of one command into the next |
+| `*` | glob: matches any characters (`ls *.txt`) |
+| `"..."` / `'...'` | quote to preserve spaces / special chars |
+| `\` | escape a single special char (`echo "He said \"Hi\""`) |
 
-**asterisk**: `ls *.txt`
-- matches any file or dir
+## Stream Control
 
-**escape** special characters like: `echo "He said \"Hi\""`
-- use `"` or `'` to print spaces `echo "Hello world!"`
-- or `echo 'He said "Hi"'`
+| redirection | usage |
+| ----------- | ----- |
+| `cmd > file` | stdout → new file (overwrite) |
+| `cmd >> file` | stdout → append to file |
+| `cmd < file` | file → stdin |
 
-# Stream Control
+| pipeline | does |
+| -------- | ---- |
+| `<cmd> \| grep "<keyword>"` | keep only matching lines |
+| `<cmd> \| sort` | sort lines |
+| `<cmd> \| sort \| uniq` | remove adjacent duplicates |
+| `<cmd> \| sort \| uniq -u` | keep only lines that appear once |
+| `<cmd> \| tr 'a-z' 'A-Z'` | map characters (here: lower → upper) |
+
+## Permissions
+
+> **read / write / execute**, each set for **user / group / other**.
 
 | command | usage |
 | ------- | ----- |
-| `cmd > file` | STDOUT -> new file |
-| `cmd >> file` | STDOUT -> append file |
-| `cmd < file`  | file -> STDIN |
-
-search for patterns: `<cmd> | grep "keywords"`
-sort lines: `<cmd> | sort`
-remove adjacent duplicates: `<cmd> | sort | uniq`
-keep only lines appearing once: `<cmd> | sort | uniq -u`
-map characters: `<cmd> | tr 'a-z' 'A-Z'`
-
-# Permissions
-
-**read**, **write**, **execute** for **user**, **group**, **other**
-
-| command | usage |
-| ------- | ----- |
-| `whoami` | get username |
-| `groups` | get groups of current user |
-| `id`    | get UID and GID's |
+| `whoami` | current username |
+| `groups` | groups of current user |
+| `id` | UID and GIDs |
 | `su [<user>]` | switch user (default root) |
-| `sudo <cmd>` | execute cmd with root |
+| `sudo <cmd>` | run a command as root |
 | `chown [<user>]:[<group>] <file>` | change ownership |
-| `chmod 600 <file>` | change permissions (to `rw-------`) |
-| `chmod u=rw,g=r,o=r <file>` | set permissions `rw-r--r--` |
+| `chmod 600 <file>` | set permissions numerically (`rw-------`) |
+| `chmod u=rw,g=r,o=r <file>` | set permissions symbolically (`rw-r--r--`) |
 
-# Process Management
+## Process Management
 
 | command | usage |
 | ------- | ----- |
-| `ps`    | processes associated with current shell |
-| `ps aux` | snapshot of all current processes |
-| `top`   | `ps aux`, but updated |
+| `ps` | processes of the current shell |
+| `ps aux` | snapshot of all processes |
+| `top` | like `ps aux`, live-updating |
 | `sleep <n>` | sleep for n seconds |
 | `<cmd> &` | run command in background |
-| `jobs`  | show background processes |
-| `bg [<pid>]` | background current process or pid |
-| `fg [<pid>]` | foreground latest process or pid |
-| `kill <pid>` | send SIGTERM to pid |
-| `kill -9 <pid>` | send SIGKILL to pid |
+| `jobs` | list background jobs |
+| `bg [<pid>]` | background a process |
+| `fg [<pid>]` | foreground a process |
+| `kill <pid>` | send SIGTERM |
+| `kill -9 <pid>` | send SIGKILL |
 
-> systemctl for services/daemons
+> services and daemons are managed with `systemctl`
 
-# Networking Commands
+## Networking Commands
 
 | command | usage |
 | ------- | ----- |
-| `ping [-c <n>] <host>` | ping host (n times)|
-| `traceroute <host>` | show hops |
-| `dig <host>` | dns query for host |
-| `ip [-br] a` | list interfaces (short format) |
+| `ping [-c <n>] <host>` | ping host (n times) |
+| `traceroute <host>` | show network hops |
+| `dig <host>` | DNS query for host |
+| `ip [-br] a` | list interfaces (`-br` = short format) |
 | `ss -tulpn` | show listening ports |
-| `tcpdump -i <interface>` | capture traffic on interface |
+| `tcpdump -i <interface>` | capture traffic on an interface |
 
-# Transfer and Communication
+## Transfer & Communication
 
-get http via command line
-- `wget <url> -O <file>`
-- `curl <url> -o <file>`
+| command | usage |
+| ------- | ----- |
+| `wget <url> -O <file>` | download over HTTP(S) |
+| `curl <url> -o <file>` | download over HTTP(S) |
+| `nc <host> <port>` | raw (unencrypted) connection |
+| `ssh [<user>@]<host> [-i <id_file>]` | encrypted remote shell |
 
-unencrypted communication: `nc <url> <port>`
-ssh: `ssh [<user>@]<host> [-i <id_file>]`
-
-# Shortcuts
-
-- for the default kali terminal: QTerminal
+## Shortcuts
 
 | shortcut | usage |
 | -------- | ----- |
-| CTRL + SHIFT + C | copy selection |
-| CTRL + SHIFT + V | paste clipboard |
-| CTRL + C | SIGTERM to current process |
-| CTRL + D | send EOF (close terminal, python, ...) |
-| CTRL + Z | suspend current process |
-| Up Arrow Key | cycle through previous commands in history |
-| Down Arrow Key | cycle through next commands in history |
-| Tab      | auto-complete |
-| Tab twice | list all possible completions |
+| `CTRL + SHIFT + C` | copy selection |
+| `CTRL + SHIFT + V` | paste clipboard |
+| `CTRL + C` | SIGINT to current process |
+| `CTRL + D` | send EOF (close shell / python / ...) |
+| `CTRL + Z` | suspend current process |
+| `↑` / `↓` | cycle through command history |
+| `Tab` | auto-complete |
+| `Tab Tab` | list all possible completions |
 
-## tmux
+### tmux
 
 | command | usage |
 | ------- | ----- |
-| `tmux [new -s <name>]` | start new session (named) |
+| `tmux [new -s <name>]` | start a new (named) session |
 | `tmux ls` | list sessions |
-| `tmux a` | attach most recently detached session |
+| `tmux a` | attach the most recently detached session |
 
-> modified config by Vocke in his [blog](https://hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/)
+> inside tmux, commands are triggered with a **prefix** (default `CTRL + B`),
+> released before the actual key. The prefix is commonly remapped to `CTRL + A`.
 
-| shortcut | vocke | usage |
-| -------- | ----- | ----- |
-| CTRL + B | CTRL + A | prefix (release before actual command) | 
-| C        |       | create new window |
-| W        |       | display all open windows |
-| {0,...9} |       | display window 0,...9 |
-| "        | -     | split horizontally |
-| %        | \|    | split vertically |
-| X        |       | close current pane |
-| D        |       | detach from current session |
-| ,        |       | rename window |
-| arrow    | ALT + arrow | switch between panes |
-| z        |       | toggle zoom active pane |
+| key (after prefix) | usage |
+| ------------------ | ----- |
+| `C` | create new window |
+| `W` | list open windows |
+| `0`–`9` | jump to window N |
+| `"` | split pane horizontally |
+| `%` | split pane vertically |
+| `X` | close current pane |
+| `D` | detach from session |
+| `,` | rename window |
+| arrow keys | switch between panes |
+| `Z` | toggle zoom on active pane |
+
+## General Tips
+
+- `man` and `--help` answer most questions faster than a search engine.
+- Quote anything with spaces or special characters to avoid surprises.
+- Prefer `find`/`grep` over clicking around — they scale to whole trees.
+- Check `ss -tulpn` to see what is actually listening before assuming a service is down.
+- Work inside `tmux` so a dropped connection never kills a long-running task.
