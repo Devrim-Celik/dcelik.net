@@ -1,0 +1,62 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-passwords-net
+    ports:
+      - "127.0.0.1:10700:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      target-passwords:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-passwords:${TAG:?run via manage.sh -- TAG not set}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-passwords-net
+    ports:
+      - "127.0.0.1:10701:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  target-passwords:
+    image: dc3lik/osl-passwords:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-passwords
+    hostname: target-passwords
+    networks:
+      - lab-passwords-net
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  lab-passwords-net:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:
+

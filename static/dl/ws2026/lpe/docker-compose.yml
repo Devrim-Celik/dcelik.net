@@ -1,0 +1,172 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10600:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      target-lpe01:
+        condition: service_healthy
+      target-lpe02:
+        condition: service_healthy
+      target-lpe03:
+        condition: service_healthy
+      target-lpe04:
+        condition: service_healthy
+      target-lpe05:
+        condition: service_healthy
+      target-lpe06:
+        condition: service_healthy
+      target-lpe07:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-lpe:${TAG:?run via manage.sh -- TAG not set}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10601:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  target-lpe01:
+    image: dc3lik/osl-lpe-01:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe01
+    hostname: target-lpe01
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10610:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe02:
+    image: dc3lik/osl-lpe-02:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe02
+    hostname: target-lpe02
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10611:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe03:
+    image: dc3lik/osl-lpe-03:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe03
+    hostname: target-lpe03
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10612:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe04:
+    image: dc3lik/osl-lpe-04:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe04
+    hostname: target-lpe04
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10613:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe05:
+    image: dc3lik/osl-lpe-05:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe05
+    hostname: target-lpe05
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10614:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe06:
+    image: dc3lik/osl-lpe-06:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe06
+    hostname: target-lpe06
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10615:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-lpe07:
+    image: dc3lik/osl-lpe-07:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-lpe07
+    hostname: target-lpe07
+    networks:
+      - lab-lpe-net
+    ports:
+      - "127.0.0.1:10616:22"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  lab-lpe-net:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:
+
