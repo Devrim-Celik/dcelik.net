@@ -1,0 +1,117 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10300:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      target-file-inclusion:
+        condition: service_healthy
+      target-file-upload:
+        condition: service_healthy
+      target-cmd-injection:
+        condition: service_healthy
+      target-sql-injection:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-web:${TAG:?run via manage.sh -- TAG not set}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10301:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  target-file-inclusion:
+    image: dc3lik/osl-web-file-inclusion:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-file-inclusion
+    hostname: target-file-inclusion
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10310:80"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-file-upload:
+    image: dc3lik/osl-web-file-upload:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-file-upload
+    hostname: target-file-upload
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10311:80"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-cmd-injection:
+    image: dc3lik/osl-web-cmd-injection:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-cmd-injection
+    hostname: target-cmd-injection
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10312:80"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-sql-injection:
+    image: dc3lik/osl-web-sql-injection:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-sql-injection
+    hostname: target-sql-injection
+    networks:
+      - lab-web-net
+    ports:
+      - "127.0.0.1:10313:80"
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  lab-web-net:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:

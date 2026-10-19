@@ -1,0 +1,111 @@
+services:
+  attacker:
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
+    container_name: attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - lab-pivoting-external
+    ports:
+      - "127.0.0.1:10800:22"
+    volumes:
+      - attacker-keys:/etc/ssh/host-keys
+    depends_on:
+      jumphost01:
+        condition: service_healthy
+      jumphost02:
+        condition: service_healthy
+      target-pivot01:
+        condition: service_healthy
+      target-pivot02:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lab-assistant:
+    image: dc3lik/osl-assistant-pivoting:${TAG:?run via manage.sh -- TAG not set}
+    container_name: lab-assistant
+    hostname: lab-assistant
+    networks:
+      - lab-pivoting-external
+    ports:
+      - "127.0.0.1:10801:22"
+    volumes:
+      - assistant-keys:/etc/ssh/host-keys
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  jumphost01:
+    image: dc3lik/osl-pivoting-jumphost:${TAG:?run via manage.sh -- TAG not set}
+    container_name: jumphost01
+    hostname: jumphost01
+    networks:
+      - lab-pivoting-external
+      - lab-pivoting-dmz
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  jumphost02:
+    image: dc3lik/osl-pivoting-jumphost:${TAG:?run via manage.sh -- TAG not set}
+    container_name: jumphost02
+    hostname: jumphost02
+    networks:
+      - lab-pivoting-dmz
+      - lab-pivoting-internal
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-pivot01:
+    image: dc3lik/osl-pivoting-pivot:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-pivot01
+    hostname: target-pivot01
+    networks:
+      - lab-pivoting-dmz
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  target-pivot02:
+    image: dc3lik/osl-pivoting-pivot:${TAG:?run via manage.sh -- TAG not set}
+    container_name: target-pivot02
+    hostname: target-pivot02
+    networks:
+      - lab-pivoting-internal
+    environment:
+      STUDENT_SECRET: ${STUDENT_ID:-changeme}
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  lab-pivoting-external:
+    driver: bridge
+  lab-pivoting-dmz:
+    driver: bridge
+  lab-pivoting-internal:
+    driver: bridge
+
+volumes:
+  attacker-keys:
+  assistant-keys:
