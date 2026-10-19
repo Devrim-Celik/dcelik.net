@@ -1,0 +1,4 @@
+{{- /* usage: {{< download "/path/file.md" "Label" >}} */ -}}
+{{- $href := .Get 0 -}}
+{{- $label := .Get 1 | default "Download" -}}
+<a href="{{ $href }}" download="{{ path.Base $href }}">{{ $label }}</a>

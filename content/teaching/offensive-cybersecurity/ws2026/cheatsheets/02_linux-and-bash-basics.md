@@ -6,6 +6,8 @@ build:
   list: never
 ---
 
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/02_linux-and-bash-basics.md" "Download this sheet (.md)" >}}
+
 
 > The core Linux and shell commands you lean on constantly: navigating the
 > filesystem, manipulating files and streams, managing processes, and basic

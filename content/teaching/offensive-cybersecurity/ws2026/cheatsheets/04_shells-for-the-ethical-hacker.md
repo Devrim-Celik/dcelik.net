@@ -6,6 +6,8 @@ build:
   list: never
 ---
 
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/04_shells-for-the-ethical-hacker.md" "Download this sheet (.md)" >}}
+
 
 > Turn "I can run commands on the target" into "I have an interactive shell."
 > The listener always runs on **your attacker box**; the target connects back

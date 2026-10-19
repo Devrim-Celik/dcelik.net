@@ -6,6 +6,8 @@ build:
   list: never
 ---
 
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/07_linux_privilege_escalation.md" "Download this sheet (.md)" >}}
+
 
 > Turn an existing permission, misconfiguration, or vulnerable component into
 > execution as a more privileged user (usually root). Always **enumerate first**,

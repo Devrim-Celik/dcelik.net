@@ -6,6 +6,8 @@ build:
   list: never
 ---
 
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/09_pivoting.md" "Download this sheet (.md)" >}}
+
 
 > Use an already-compromised host as a *pivot* to reach networks you can't touch
 > directly. Two building blocks: **tunneling** (wrap a PDU inside another, usually

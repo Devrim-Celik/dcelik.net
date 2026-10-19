@@ -6,6 +6,8 @@ build:
   list: never
 ---
 
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/03_reconnaissance.md" "Download this sheet (.md)" >}}
+
 
 > Information gathering: find live hosts, find open ports, and identify the
 > service and version behind each one. General flow: host discovery → port
