@@ -10,8 +10,8 @@ There are two sittings. You take the first; the second (*Nachschreibeklausur*) i
 
 | Sitting | Date | Time |
 |---|---|---|
-| First exam | 05.03.2027 | 12:00 - 15:00 |
-| Resit | 02.04.2027 | 12:00 - 15:00 |
+| First exam | 05.03.2027 | 12:00 to 15:00 |
+| Resit | 02.04.2027 | 12:00 to 15:00 |
 
 ## Practice exam
 [Download the practice exam (PDF)](/exam/mock_exam_general.pdf)

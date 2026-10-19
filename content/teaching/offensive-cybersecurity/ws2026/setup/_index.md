@@ -5,7 +5,7 @@ title: "Environment Setup"
 
 A one-time setup to prepare your machine for the labs. You do this once at the start of the course. When you're done, continue to the [Lab Guide](../lab-guide/), which you'll use every week.
 
-The labs run inside Docker, on a Kali Linux virtual machine, inside VirtualBox. That means you don't need to install hacking tools or touch your real operating system - everything lives in the VM.
+The labs run inside Docker, on a Kali Linux virtual machine, inside VirtualBox. That means you don't need to install hacking tools or touch your real operating system. Everything lives in the VM.
 
 ![The lab environment: Docker runs the labs inside a Kali Linux VM, which runs in VirtualBox on your own computer.](/img/setup-architecture.png)
 
@@ -17,13 +17,13 @@ On the [Kali Linux downloads page](https://www.kali.org/get-kali/#kali-virtual-m
 
 Log in with the default credentials `kali` / `kali`.
 
-> Optional - German keyboard layout. Either set it in the GUI (**Settings Manager > Keyboard > Layout**, add German, remove English), or from a terminal:
+> Optional: German keyboard layout. Either set it in the GUI (**Settings Manager > Keyboard > Layout**, add German, remove English), or from a terminal:
 > ```bash
 > # kali
 > sudo sed -i 's/XKBLAYOUT="us"/XKBLAYOUT="de"/' /etc/default/keyboard
 > sudo setupcon
 > ```
-> If the layout resets after a reboot, use the GUI route - the Xfce settings daemon can override the console setting.
+> If the layout resets after a reboot, use the GUI route. The Xfce settings daemon can override the console setting.
 
 Open a terminal inside the Kali VM and run (this may take up to 30 minutes):
 ```bash

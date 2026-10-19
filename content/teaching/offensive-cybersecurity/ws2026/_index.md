@@ -19,7 +19,7 @@ Winter term 2026/27 at University of Bonn.
 ## Course Information
 1. [Environment Setup](setup/): prepare your machine (once)
 2. [Lab Guide](lab-guide/): running and navigating the labs
-3. [Lab Submissions](lab-submissions/): what to submit, deadlines, and how exam admission works
+3. [Exam Admission](exam-admission/): the submissions you need, their deadlines, and the report template
 
 **Tutor session:** the weekly time is decided by poll: [vote here](https://rallly.co/invite/fiIYQa6deLrK).
 
