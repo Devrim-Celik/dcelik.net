@@ -21,6 +21,6 @@ Winter term 2026/27 at University of Bonn.
 2. [Lab Guide](lab-guide/): running and navigating the labs
 3. [Exam Admission](exam-admission/): the submissions you need, their deadlines, and the report template
 
-**Tutor session:** the weekly time is decided by poll: [vote here](https://rallly.co/invite/fiIYQa6deLrK).
+**Weekly tutor session:** Mondays 13:00 to 14:00, a drop-in voice session on the student Discord. See the [Lab Guide](lab-guide/) for how to join.
 
 {{< sessions >}}

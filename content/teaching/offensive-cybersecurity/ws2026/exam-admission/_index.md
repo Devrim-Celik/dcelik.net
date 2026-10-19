@@ -26,8 +26,5 @@ All deadlines are **23:59** on the stated day. You complete **any 5 of these 6**
 ## What a submission must show
 *Coming Soon*
 
-### If you get stuck
-A weekly tutor session runs as an open room where you can drop in and ask questions.
-
 ## Report template
 *Coming Soon*

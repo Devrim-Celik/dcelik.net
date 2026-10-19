@@ -109,3 +109,8 @@ ssh-keygen -R '[localhost]:<port>'
 **"Lab isn't available for this edition"**: either the lab name is misspelled, or it hasn't been released yet. Check the course table for released labs and exact names.
 
 **A lab was updated**: run `./manage.sh refresh <lab-name>` to pull the new version, then start it again.
+
+## Weekly tutor session
+Stuck on a lab? There is a weekly drop-in tutor session, **Mondays 13:00 to 14:00**, in the voice channel of the **offensive-sicherheit** room on the Info & Cyber-Sec Bonn student Discord (a student-run server). Just show up with your questions.
+
+To join the Discord: open the [Fachschaft Informatik site](https://www.fachschaft.info/en/), scroll to its **Social Media** section (under **Unofficial Channels**), and use the **Info & Cyber-Sec Bonn** Discord link. Then open the **offensive-sicherheit** room and join its voice channel at the session time.
