@@ -149,28 +149,32 @@
 | `Tab Tab` | list all possible completions |
 
 ### tmux
+Multiple windows and panes in one terminal, and sessions that survive a dropped SSH connection.
 
 | command | usage |
 | ------- | ----- |
-| `tmux [new -s <name>]` | start a new (named) session |
+| `tmux` / `tmux new -s <name>` | start a new (named) session |
 | `tmux ls` | list sessions |
-| `tmux a` | attach the most recently detached session |
+| `tmux a [-t <name>]` | attach the last (or a named) session |
 
-> inside tmux, commands are triggered with a **prefix** (default `CTRL + B`),
-> released before the actual key. The prefix is commonly remapped to `CTRL + A`.
+Inside tmux most keys use a **prefix**: press and release it, then the key. On the attacker the prefix is `Ctrl-a`.
 
-| key (after prefix) | usage |
-| ------------------ | ----- |
-| `C` | create new window |
-| `W` | list open windows |
-| `0`–`9` | jump to window N |
-| `"` | split pane horizontally |
-| `%` | split pane vertically |
-| `X` | close current pane |
-| `D` | detach from session |
-| `,` | rename window |
-| arrow keys | switch between panes |
-| `Z` | toggle zoom on active pane |
+| key | usage |
+| --- | ----- |
+| `Ctrl-a` | the prefix (press, release, then a key below) |
+| `prefix` `c` | new window |
+| `prefix` `w` | list and pick windows |
+| `prefix` `0` to `9` | jump to that window |
+| `prefix` `\|` | split pane left/right |
+| `prefix` `-` | split pane top/bottom |
+| `Alt + arrow` | switch pane (no prefix needed) |
+| `prefix` `z` | toggle zoom on the active pane |
+| `prefix` `x` | close pane |
+| `prefix` `,` | rename window |
+| `prefix` `&` | close window |
+| `prefix` `d` | detach (keeps running; reattach with `tmux a`) |
+
+The attacker ships [Hamel Vocke's tmux config](https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/), so the bindings differ from vanilla tmux: prefix `Ctrl-a` (not `Ctrl-b`), splits `|` and `-` (not `%` and `"`), and panes switch with `Alt+arrow`. It is already installed, so there is nothing to set up.
 
 ## General Tips
 
