@@ -56,6 +56,14 @@ The first command should print a "Hello from Docker!" message. The second should
 
 If both work, your environment is ready. Continue to the [Lab Guide](../lab-guide/) to run your first lab.
 
+## Optional: matching tmux config
+The attacker container uses a customized tmux (prefix `Ctrl-a`, `|` and `-` to split panes, `Alt+arrow` to switch panes; the same shortcuts listed on the Bash cheat sheet). If you also run tmux on your Kali VM to juggle sessions, install the same config so the shortcuts match everywhere:
+```bash
+# kali
+curl -fsSL https://dcelik.net/dl/tmux.conf -o ~/.tmux.conf
+```
+This only affects tmux on your VM and is entirely optional.
+
 ## Apple Silicon Macs
 Macs with an Apple chip (M1, M2, M3, M4) cannot use VirtualBox for these labs: VirtualBox on Apple Silicon only runs ARM guests, while the prebuilt Kali image above is x86-64. Use the path below instead. Everything else stays the same afterwards: you still run a Kali VM, start labs with `manage.sh`, and SSH into the attacker container.
 

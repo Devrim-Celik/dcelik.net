@@ -174,7 +174,7 @@ Inside tmux most keys use a **prefix**: press and release it, then the key. On t
 | `prefix` `&` | close window |
 | `prefix` `d` | detach (keeps running; reattach with `tmux a`) |
 
-The attacker ships [Hamel Vocke's tmux config](https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/), so the bindings differ from vanilla tmux: prefix `Ctrl-a` (not `Ctrl-b`), splits `|` and `-` (not `%` and `"`), and panes switch with `Alt+arrow`. It is already installed, so there is nothing to set up.
+The attacker ships [Hamel Vocke's tmux config](https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/), so the bindings differ from vanilla tmux: prefix `Ctrl-a` (not `Ctrl-b`), splits `|` and `-` (not `%` and `"`), and panes switch with `Alt+arrow`. It is already installed, so there is nothing to set up. The same config is available for your own Kali VM; see the [Setup page](/teaching/offensive-cybersecurity/ws2026/setup/).
 
 ## General Tips
 
