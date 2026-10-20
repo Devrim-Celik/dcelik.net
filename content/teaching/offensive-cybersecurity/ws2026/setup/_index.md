@@ -88,13 +88,10 @@ From here, follow the [Lab Guide](../lab-guide/). Everything works the same; the
 If a lab misbehaves, first make sure your Kali is fully updated. As heavier fallbacks, you can run a full **x86-64** Kali in UTM (emulates the whole system, slower but maximally compatible), or use the Institute's remote pool computers.
 
 ### If the attacker container refuses SSH logins
-On older emulation setups the attacker container's SSH can refuse logins. You normally never touch Docker directly; this is the one manual exception.
-
-1. Start the lab once so its config is downloaded: `./manage.sh start <lab-name>`
-2. Open `labs/ws2026/<lab-name>/docker-compose.yml` (in the same folder as your `manage.sh`).
-3. Find the `attacker:` service and add a `security_opt` entry to it:
-   ```yaml
-   security_opt:
-     - seccomp=unconfined
-   ```
-4. Restart the lab: `./manage.sh stop <lab-name>`, then `./manage.sh start <lab-name>`. Do not run `refresh` afterwards, or the file is re-downloaded and your edit is lost.
+This was an emulation bug in the attacker's SSH server, and the fix is now built into the attacker image, so a fresh setup just works. If you set things up before the fix and still hit it, you are on the old cached image. Pull the current one and restart the lab:
+```bash
+# kali
+./manage.sh stop <lab-name>
+docker pull dc3lik/osl-attacker:ws2026
+./manage.sh start <lab-name>
+```
