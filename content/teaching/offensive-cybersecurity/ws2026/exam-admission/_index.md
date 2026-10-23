@@ -19,7 +19,7 @@ Most submissions are a single lab. Two are exceptions: the Web lab is large, so 
 | 5 | LPE | Linux privilege escalation | *not yet released* | 13 Jan 2027 |
 | 6 | Pivoting | pivoting | *not yet released* | 20 Jan 2027 |
 
-All deadlines are **23:59** on the stated day. You complete **any 5 of these 6** for admission.
+All deadlines are **23:55** on the stated day. You complete **any 5 of these 6** for admission.
 
 > The **Bash** lab and the **Web Frameworks** lab are **optional**. They are worth doing (Bash to get comfortable with the environment and the basics, Web Frameworks because it's an interesting topic), but neither is a submission and neither is required for admission.
 
