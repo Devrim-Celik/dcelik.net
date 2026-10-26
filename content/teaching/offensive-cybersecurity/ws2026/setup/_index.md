@@ -33,6 +33,7 @@ Open a terminal inside the Kali VM and run (this may take up to 30 minutes):
 sudo apt update && sudo apt upgrade -y
 ```
 
+> If the GUI feels sluggish, give the VM more resources. The VirtualBox default is often 2 GB RAM and 1 CPU core, which is tight for tools with a heavy interface such as Burp Suite. Shut the VM down, then in VirtualBox under **Settings > System** raise the memory to 4 GB (8 GB if you can spare it) and the processor count to 2 cores, and boot again.
 
 ## 3. Install Docker
 Open a terminal **inside the Kali VM** and run:
