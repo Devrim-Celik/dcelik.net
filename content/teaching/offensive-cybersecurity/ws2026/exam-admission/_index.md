@@ -40,11 +40,16 @@ Upload a single `.md` file named:
 where `<labname>` is one of `recon`, `web-part1`, `web-part2`, `public-passwords`, `lpe`, `pivoting`. A skeleton to start from:
 
 ```markdown
+---
+lab: <labname>
+matrik: <your Matrikelnummer>
+---
+
 # <labname> writeup
-Name: <family name>, <first name>
-Matrikelnummer: <number>
 
 ## <first objective from the lab-assistant>
 
 ## <next objective>
 ```
+
+Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Your name comes from the file name, so it does not need to be repeated inside the document.
