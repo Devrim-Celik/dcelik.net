@@ -1,6 +1,6 @@
 services:
   attacker:
-    image: dc3lik/osl-attacker:${TAG}
+    image: dc3lik/osl-attacker:${TAG:?run via manage.sh -- TAG not set}
     container_name: attacker
     hostname: attacker
     cap_add:
@@ -23,7 +23,7 @@ services:
       retries: 5
 
   lab-assistant:
-    image: dc3lik/osl-assistant-bash:${TAG}
+    image: dc3lik/osl-assistant-bash:${TAG:?run via manage.sh -- TAG not set}
     container_name: lab-assistant
     hostname: lab-assistant
     networks:
@@ -39,7 +39,7 @@ services:
       retries: 5
 
   bash-trainer:
-    image: dc3lik/osl-bash-trainer:${TAG}
+    image: dc3lik/osl-bash-trainer:${TAG:?run via manage.sh -- TAG not set}
     container_name: bash-trainer
     hostname: bash-trainer
     environment:
@@ -62,4 +62,3 @@ networks:
 volumes:
   attacker-keys:
   assistant-keys:
-

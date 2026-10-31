@@ -127,6 +127,16 @@ ensure_compose() {
     esac
 }
 
+# Force-pull the lab's images (latest for the current TAG). Used by refresh and
+# start --refresh so an updated lab actually replaces a stale cached image.
+pull_images() {
+    local lab="$1"
+    echo -e "  Pulling latest images for ${BLD}$lab${RST} (first time can be slow)..."
+    if ! compose "$lab" pull; then
+        echo -e "  ${YLW}Could not pull images; the cached versions will be used.${RST}"
+    fi
+}
+
 # ── commands ──────────────────────────────────────────────────────────────
 
 cmd_start() {
@@ -149,6 +159,7 @@ cmd_start() {
     done
 
     ensure_compose "$lab" "$refresh"
+    [[ "$refresh" -eq 1 ]] && pull_images "$lab"
     compose "$lab" up -d
 
     local ap; ap=$(attacker_port "$lab")
@@ -186,6 +197,7 @@ cmd_refresh() {
     [[ -n "$lab" ]] || die "usage: $0 refresh <lab>"
     valid_lab "$lab" || die "unknown lab '$lab' -- available: ${LABS[*]}"
     ensure_compose "$lab" 1
+    pull_images "$lab"
 }
 
 cmd_status() {
@@ -223,9 +235,9 @@ usage() {
     echo ""
     echo -e "  ${BLD}usage:${RST} $0 <command> [options]"
     echo ""
-    echo "  start [--refresh] <lab>   start a lab (fetches compose file if needed)"
+    echo "  start [--refresh] <lab>   start a lab (--refresh also pulls latest images)"
     echo "  stop  <lab>               stop a lab"
-    echo "  refresh <lab>             re-fetch a lab's compose file"
+    echo "  refresh <lab>             re-fetch compose + pull the lab's latest images"
     echo "  status                    show all labs and their state"
     echo "  clean                     stop all labs and remove volumes"
     echo ""
@@ -241,4 +253,3 @@ case "${1:-}" in
     clean)   cmd_clean   ;;
     *)       usage       ;;
 esac
-

@@ -59,4 +59,3 @@ networks:
 volumes:
   attacker-keys:
   assistant-keys:
-
