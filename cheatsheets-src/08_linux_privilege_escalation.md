@@ -129,7 +129,7 @@ su pwn
 echo '<hash>' > hash
 john --wordlist=/usr/share/wordlists/rockyou.txt hash
 ```
-> reading `/etc/shadow` is covered further in the passwords lab.
+> reading `/etc/shadow` is covered in the passwords lab (which comes first).
 
 **`/etc/sudoers` writable**: grant yourself root:
 ```

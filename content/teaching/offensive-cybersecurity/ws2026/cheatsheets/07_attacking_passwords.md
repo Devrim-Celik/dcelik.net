@@ -6,7 +6,7 @@ build:
   list: never
 ---
 
-[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/08_attacking_passwords.md" "Download this sheet (.md)" >}}
+[← Cheat Sheets](../) · {{< download "/dl/cheatsheets/07_attacking_passwords.md" "Download this sheet (.md)" >}}
 
 
 > Two jobs: **brute forcing** live services (guess credentials over the network)

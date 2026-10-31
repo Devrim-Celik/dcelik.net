@@ -10,8 +10,8 @@ sessions:
   - { title: "Shells for the Ethical Hacker",   file: "04_shells-for-the-ethical-hacker",                                          cheatsheet: true }
   - { title: "Web Exploitation",                file: "05_web_exploitation",              lab: "web",             released: false, cheatsheet: true }
   - { title: "Public Exploits",                 file: "06_public_exploits",               lab: "public-exploits", released: false, cheatsheet: true }
-  - { title: "Linux Privilege Escalation",      file: "07_linux_privilege_escalation",    lab: "lpe",             released: false, cheatsheet: true }
-  - { title: "Attacking Passwords",             file: "08_attacking_passwords",           lab: "passwords",       released: false, cheatsheet: true }
+  - { title: "Attacking Passwords",             file: "07_attacking_passwords",           lab: "passwords",       released: false, cheatsheet: true }
+  - { title: "Linux Privilege Escalation",      file: "08_linux_privilege_escalation",    lab: "lpe",             released: false, cheatsheet: true }
   - { title: "Pivoting",                        file: "09_pivoting",                      lab: "pivoting",        released: false, cheatsheet: true }
 ---
 Winter term 2026/27 at University of Bonn.

@@ -83,7 +83,7 @@ sheet filenames/URLs), `lab` (a lab token), and boolean flags `released` and
 
 Session `file` tokens (WS2026): `02_linux-and-bash-basics`, `03_reconnaissance`,
 `04_shells-for-the-ethical-hacker`, `05_web_exploitation`, `06_public_exploits`,
-`07` (LPE, not yet done), `08_attacking_passwords`, `09_pivoting`, plus pivoting
+`07_attacking_passwords`, `08_linux_privilege_escalation`, `09_pivoting`, plus pivoting
 and web-frameworks labs. (00 Formalities, 01 Intro have no cheat sheet.)
 
 ## 5. Cheat sheet pipeline (current — HTML pages, no PDF)

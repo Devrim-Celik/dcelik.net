@@ -13,6 +13,6 @@ markdown to keep on the attacker box (handy for `grep`).
 | 04 | [Shells for the Ethical Hacker](04_shells-for-the-ethical-hacker/) |
 | 05 | [Web Exploitation](05_web_exploitation/) |
 | 06 | [Public Exploits](06_public_exploits/) |
-| 07 | [Linux Privilege Escalation](07_linux_privilege_escalation/) |
-| 08 | [Attacking Passwords](08_attacking_passwords/) |
+| 07 | [Attacking Passwords](07_attacking_passwords/) |
+| 08 | [Linux Privilege Escalation](08_linux_privilege_escalation/) |
 | 09 | [Pivoting](09_pivoting/) |
