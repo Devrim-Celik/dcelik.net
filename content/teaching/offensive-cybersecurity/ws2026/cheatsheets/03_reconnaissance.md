@@ -11,7 +11,7 @@ build:
 
 > Information gathering: find live hosts, find open ports, and identify the
 > service and version behind each one. General flow: host discovery → port
-> scan → per-service enumeration. Note software **and version** everywhere — it
+> scan → per-service enumeration. Note software **and version** everywhere; it
 > feeds everything that comes later.
 
 ## Nmap
@@ -138,7 +138,7 @@ build:
 | command | usage |
 | ------- | ----- |
 | `curl <url>` | fetch a page |
-| `curl -I <url>` | headers only (HEAD) — tech, custom `x-` headers |
+| `curl -I <url>` | headers only (HEAD): tech, custom `x-` headers |
 
 | file | usage |
 | ---- | ----- |
@@ -203,7 +203,7 @@ build:
 
 ## General Tips
 
-- Enumerate **every** open port, TCP **and** UDP — do not stop at port 80.
+- Enumerate **every** open port, TCP **and** UDP; do not stop at port 80.
 - Record software **and version** for each service; it drives later steps.
 - Keep organized notes: one section per host, one per service.
 - Save scan output (`-oN` / `-oA`) so you never have to re-scan.

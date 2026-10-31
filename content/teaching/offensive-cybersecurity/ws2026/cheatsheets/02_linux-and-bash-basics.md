@@ -189,6 +189,6 @@ The attacker ships [Hamel Vocke's tmux config](https://www.hamvocke.com/blog/a-g
 
 - `man` and `--help` answer most questions faster than a search engine.
 - Quote anything with spaces or special characters to avoid surprises.
-- Prefer `find`/`grep` over clicking around — they scale to whole trees.
+- Prefer `find`/`grep` over clicking around; they scale to whole trees.
 - Check `ss -tulpn` to see what is actually listening before assuming a service is down.
 - Work inside `tmux` so a dropped connection never kills a long-running task.

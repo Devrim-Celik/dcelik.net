@@ -16,10 +16,10 @@
 | destination port (DP) | the far-side socket traffic is delivered to |
 | local / remote (SSH) | **local** = the host you run `ssh` *from*; **remote** = the host it connects *to* |
 
-## SSH Port Forwarding — shared syntax
+## SSH Port Forwarding: shared syntax
 
 > `-f` background · `-N` no remote shell/command · `-q` quiet. Combine as `-fNq`.
-> `host:port` — if host is omitted it defaults to `localhost`.
+> `host:port`; if host is omitted it defaults to `localhost`.
 
 | mode | flag | mnemonic (left→right) |
 | ---- | ---- | --------------------- |
@@ -45,7 +45,7 @@ ssh -fNq -L [bind:]LPORT:DEST_HOST:DEST_PORT [user@]jumphost
 
 > `DEST_HOST` is looked up **on the jump host**, so `2.2.2.2` works as long as the
 > jump host can route to it. Binding the listener to a specific local IP (not
-> localhost) lets a *third* machine use your forward — no `GatewayPorts` needed for `-L`.
+> localhost) lets a *third* machine use your forward; no `GatewayPorts` needed for `-L`.
 
 ## SSH Dynamic Port Forward (-D) + proxychains
 
@@ -73,7 +73,7 @@ proxychains4 -q <command>                # -q = quiet
 | caveat | note |
 | ------ | ---- |
 | TCP only | no UDP, no ICMP (hooks the `connect()` syscall) |
-| speed | ~2–10× slower; tune timeouts in the conf |
+| speed | ~2 to 10x slower; tune timeouts in the conf |
 | Nmap | only `-sT` works; add `-Pn` (no ICMP host discovery). Flaky in practice → prefer tun2socks |
 
 ## tun2socks (SOCKS proxy → tun interface)
@@ -120,7 +120,7 @@ ssh -fNq -R [bind:]LPORT:DEST_HOST:DEST_PORT [user@]attacker
 
 ## ssh -J (ProxyJump)
 
-> Chain the SSH **login itself** through one or more jump hosts in a single command —
+> Chain the SSH **login itself** through one or more jump hosts in a single command;
 > you land directly on the target. Unlike `-L`/`-D`/`-R` (which forward tooling), `-J`
 > only gets you a shell. The client stays on your box; you authenticate end-to-end.
 
@@ -145,7 +145,7 @@ sshuttle -r user@jh 0.0.0.0/0 -x 192.168.0.0/24            # everything except a
 ```
 
 > Same limits as dynamic-forward + tun2socks: **TCP only**, and Nmap can show every
-> port as open — but it removes the tedious manual setup, and adds an easy DNS proxy.
+> port as open, but it removes the tedious manual setup, and adds an easy DNS proxy.
 
 ## ligolo-ng (agent-based, the full-featured option)
 
@@ -176,10 +176,10 @@ start --tun ligolo
 | macro | does | short form |
 | ----- | ---- | ---------- |
 | `interface_create --name X` | make a tun interface | `ifcreate` |
-| `route_add --name X --route N/M` | add a route to a tunnel | — |
-| `start --tun X` | attach interface + start tunnel | — |
-| `listener_add --addr 0.0.0.0:P --to 127.0.0.1:P --tcp` | reverse port forward through the agent | — |
-| `autoroute` | create iface + route + start tunnel in one go | — |
+| `route_add --name X --route N/M` | add a route to a tunnel | n/a |
+| `start --tun X` | attach interface + start tunnel | n/a |
+| `listener_add --addr 0.0.0.0:P --to 127.0.0.1:P --tcp` | reverse port forward through the agent | n/a |
+| `autoroute` | create iface + route + start tunnel in one go | n/a |
 
 | task | how |
 | ---- | --- |
@@ -204,5 +204,5 @@ start --tun ligolo
 - Port forward = sockets; tunnel = the encrypted pipe they travel through.
 - `-L` resolves the destination on the **remote** side; `-R` resolves it on the **local** (your) side.
 - `-J` forwards only the SSH login; `-L`/`-D`/`-R` forward arbitrary tooling.
-- Any SOCKS/tun method over TCP tends to make Nmap report ports as open — verify with `-sV`.
+- Any SOCKS/tun method over TCP tends to make Nmap report ports as open; verify with `-sV`.
 - SSH-based methods all need an SSH server on the jump host and are "end-to-end"; ligolo-ng drops both constraints at the cost of dropping an agent binary.
