@@ -8,7 +8,7 @@ sessions:
   - { title: "Linux and Bash Basics",           file: "02_linux-and-bash-basics",         lab: "bash",            released: true,  cheatsheet: true }
   - { title: "Reconnaissance",                  file: "03_reconnaissance",                lab: "recon",           released: true, cheatsheet: true }
   - { title: "Shells for the Ethical Hacker",   file: "04_shells-for-the-ethical-hacker",                                          cheatsheet: true }
-  - { title: "Web Exploitation",                file: "05_web_exploitation",              lab: "web",             released: false, cheatsheet: true }
+  - { title: "Web Exploitation",                file: "05_web_exploitation",              lab: "web",             released: true, cheatsheet: true }
   - { title: "Public Exploits",                 file: "06_public_exploits",               lab: "public-exploits", released: false, cheatsheet: true }
   - { title: "Attacking Passwords",             file: "07_attacking_passwords",           lab: "passwords",       released: false, cheatsheet: true }
   - { title: "Linux Privilege Escalation",      file: "08_linux_privilege_escalation",    lab: "lpe",             released: false, cheatsheet: true }
