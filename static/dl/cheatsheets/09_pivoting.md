@@ -5,6 +5,14 @@
 > encrypted) and **port forwarding** (a socket that relays traffic to another socket).
 > A port forward rides *through* a tunnel; many forwards can share one tunnel.
 
+> **"Target network"** = the subnet you want to reach that is routable *from the
+> jump host* but not from you. Find its range on the pivot (`ip addr` / `ip route`
+> on the jump host, or resolve a known host and take its `/24`:
+> `ssh user@jumphost getent hosts target-x`).
+>
+> **Where to run it:** commands run on your attacker box (`[user@kali ~]$`) unless a
+> line is tagged `[user@jumphost ~]$`, meaning run it on the jump host.
+
 ## Terminology
 
 | term | meaning |
@@ -87,10 +95,13 @@ ssh -fNq -D 5555 user@jumphost                                   # 1. SOCKS prox
 sudo ./tun2socks --proxy socks5://127.0.0.1:5555 --device tun0   # 2. map to tun0
 sudo ip link set tun0 up                                         # 3. bring it up
 sudo ip addr add <ip>/<mask> dev tun0                            # 4. address in target subnet
+sudo ip route add <target_net>/<mask> dev tun0                  # 5. REQUIRED: route target traffic into tun0
 ```
 
 > Flags accept single or double dash (`-proxy` == `--proxy`, it's a Go binary).
-> Then route the target subnet via `tun0` (`sudo ip route add <net>/<mask> dev tun0`).
+> **Step 5 is mandatory**: without the route the kernel never sends target traffic
+> into `tun0`, so nothing works. sshuttle and ligolo add this route for you; tun2socks
+> does not, which is what makes it the fiddly one.
 
 | Nmap caveat | fix |
 | ----------- | --- |
@@ -105,7 +116,7 @@ sudo ip addr add <ip>/<mask> dev tun0                            # 4. address in
 > has no SSH server, or a firewall/IDS blocks *inbound* SSH to it.
 
 ```bash
-ssh -fNq -R [bind:]LPORT:DEST_HOST:DEST_PORT [user@]attacker
+[user@jumphost ~]$ ssh -fNq -R [bind:]LPORT:DEST_HOST:DEST_PORT [user@]attacker
 ```
 
 | goal | command (run from the jump host, connecting back to you) |
