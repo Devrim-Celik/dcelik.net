@@ -1,3 +1,5 @@
 public/
 resources/
 .hugo_build.lock
+# Claude Code local state (worktrees, session scratch)
+.claude/

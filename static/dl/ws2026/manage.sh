@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="$ROOT/.env"
-LABS=(bash recon web web2 public-exploits lpe passwords pivoting)
+LABS=(bash recon web public-exploits lpe passwords pivoting)
 BASE_URL="https://dcelik.net/dl"
 COURSE_URL="https://dcelik.net/teaching/offensive-cybersecurity"
 
@@ -57,7 +57,6 @@ attacker_port() {
         bash)            echo 10100 ;;
         recon)           echo 10200 ;;
         web)             echo 10300 ;;
-        web2)            echo 10400 ;;
         public-exploits) echo 10500 ;;
         lpe)             echo 10600 ;;
         passwords)       echo 10700 ;;

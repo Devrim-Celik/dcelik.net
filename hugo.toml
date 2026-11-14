@@ -1,6 +1,51 @@
 baseURL = 'https://dcelik.net/'
-title = 'D. Celik'
+title = 'dcelik.net'
 theme = 'PaperMod'
+
 [params]
-  defaultTheme = "dark"
+  defaultTheme = "auto"
   ShowBreadCrumbs = true
+  description = "Devrim Celik: information security officer, auditor, and lecturer in offensive security, based in Bonn, Germany."
+  author = "Devrim Celik"
+
+  # Profile landing (name, subtitle, buttons) switched off for now; set to true to bring it back.
+  [params.profileMode]
+    enabled = false
+    title = "Devrim Celik"
+    subtitle = "I work in information security and teach offensive security at university. Based in Bonn."
+    # imageUrl intentionally unset (no profile photo)
+
+    [[params.profileMode.buttons]]
+      name = "About"
+      url = "/about/"
+    [[params.profileMode.buttons]]
+      name = "Teaching"
+      url = "/teaching/"
+    [[params.profileMode.buttons]]
+      name = "Current course"
+      url = "/teaching/offensive-cybersecurity/ws2026/"
+
+  # Placeholders for later (kept disabled per brief: no contact/social for now).
+  # Uncomment and fill to enable:
+  # [[params.socialIcons]]
+  #   name = "email"
+  #   url = "mailto:you@example.com"
+  # [[params.socialIcons]]
+  #   name = "github"
+  #   url = "https://github.com/your-handle"
+  # [[params.socialIcons]]
+  #   name = "linkedin"
+  #   url = "https://www.linkedin.com/in/your-handle"
+
+[menu]
+  # About page is parked as a draft (content/about.md); uncomment to show it in the menu again.
+  # [[menu.main]]
+  #   identifier = "about"
+  #   name = "About"
+  #   url = "/about/"
+  #   weight = 10
+  [[menu.main]]
+    identifier = "teaching"
+    name = "Teaching"
+    url = "/teaching/"
+    weight = 20
