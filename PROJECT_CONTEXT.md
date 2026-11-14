@@ -28,7 +28,8 @@
 - **Mail:** ProtonMail — MX/SPF/DKIM/DMARC records are **preserved and must never
   be touched** when changing DNS. The site is web-only; mail is independent.
 - **Local machine:** Linux PC. Repo lives at
-  `~/Cloud/OFFICIAL_ETHICAL_HACKING/dcelik.net/`.
+  `~/projects/offensive-cybersecurity/dcelik.net/`, beside the private labs repo
+  (`../labs/`), the lab-hosting PoC (`../lab-hosting/`) and exam material (`../exams/`).
 
 > **Known deploy gotcha (already fixed):** the Actions workflow pins
 > `hugo --gc --minify --baseURL "https://dcelik.net/"`. Using the Pages
@@ -47,23 +48,27 @@ dcelik.net/
 │       ├── _index.md                # edition page: sessions front matter + {{< sessions >}}
 │       ├── setup/                   # Environment Setup guide
 │       ├── lab-guide/               # Lab Guide
-│       ├── lab-submissions/         # Submissions / exam admission info
+│       ├── exam-admission/          # submission rules, deadlines, grading criteria, report template
+│       ├── exam/                    # Final exam: format, dates, practice exam PDF
 │       └── cheatsheets/             # RENDERED cheat sheet pages (generated, see §5)
 │           ├── _index.md
 │           └── <name>.md            # one per cheat sheet, built by publish-cheatsheet.sh
-├── data/
 ├── hugo.toml
-├── i18n/
 ├── layouts/
-│   └── shortcodes/
-│       └── sessions.html            # renders the course table (# / Slides / Cheat sheet / Lab) + exam row
+│   ├── shortcodes/
+│   │   ├── sessions.html            # renders the course table (# / Slides / Cheat sheet / Lab) + exam row
+│   │   └── download.html            # forced-download link (used on cheat sheet pages)
+│   └── teaching/list.html
 ├── public/                          # build output (ignore)
 ├── publish-cheatsheet.sh            # md in cheatsheets-src/ -> rendered Hugo page (see §5)
 ├── static/
-│   └── teaching/offensive-cybersecurity/ws2026/
-│       ├── slides/NN_name.pdf       # slide decks (PDF, exported from Google Slides)
-│       └── dl/ws2026/               # lab distribution: manage.sh + per-lab docker-compose.yml
-└── themes/                          # PaperMod
+│   ├── teaching/offensive-cybersecurity/ws2026/
+│   │   └── slides/NN_name.pdf       # slide decks (PDF, exported from Google Slides)
+│   ├── dl/ws2026/                   # lab distribution: manage.sh + <lab>/docker-compose.yml (from make release)
+│   ├── dl/cheatsheets/<name>.md     # raw cheat sheet copies (written by publish-cheatsheet.sh)
+│   ├── dl/tmux.conf                 # attacker tmux config
+│   └── img/                         # setup/lab-guide diagrams
+└── themes/                          # PaperMod (submodule, never edited)
 ```
 
 ## 4. The session/edition model
@@ -81,12 +86,16 @@ sheet filenames/URLs), `lab` (a lab token), and boolean flags `released` and
 - Lab token renders as `<code>`; shows "not yet released" until `released: true`.
 - `released` / `cheatsheet` booleans gate what is visible per session.
 
-Session `file` tokens (WS2026): `02_linux-and-bash-basics`, `03_reconnaissance`,
-`04_shells-for-the-ethical-hacker`, `05_web_exploitation`, `06_public_exploits`,
-`07_attacking_passwords`, `08_linux_privilege_escalation`, `09_pivoting`, plus pivoting
-and web-frameworks labs. (00 Formalities, 01 Intro have no cheat sheet.)
+Session `file` tokens (WS2026): `00_formaties-and-setup`, `01_introduction-to-ethical-hacking`,
+`02_linux-and-bash-basics`, `03_reconnaissance`, `04_shells-for-the-ethical-hacker`,
+`05_web_exploitation`, `06_public_exploits`, `07_attacking_passwords`,
+`08_linux_privilege_escalation`, `09_pivoting`. (00 and 01 have no cheat sheet or lab; 04 has
+no lab.)
 
-## 5. Cheat sheet pipeline (current — HTML pages, no PDF)
+`released: false` is used deliberately to hide a session's lab link even when the lab's
+compose file is already published under `static/dl/ws2026/` (currently LPE and Pivoting).
+
+## 5. Cheat sheet pipeline (current: HTML pages, no PDF)
 
 Cheat sheets are authored as markdown in `cheatsheets-src/` and **rendered as Hugo
 pages** (not PDFs). `publish-cheatsheet.sh` converts one source file into a content
@@ -97,15 +106,17 @@ page.
 ./publish-cheatsheet.sh <name>        # name WITHOUT .md, and must match the session `file` token
 ```
 The script: reads the first `# ` as the page title, strips that H1, prepends front
-matter (`title`, `ShowToc`, `build.list: never`) and writes
-`content/teaching/offensive-cybersecurity/ws2026/cheatsheets/<name>.md`.
+matter (`title`, `ShowToc`, `build.list: never`) plus a nav line (back to the cheat
+sheet index + a `{{< download >}}` link to the raw `.md`), writes
+`content/teaching/offensive-cybersecurity/ws2026/cheatsheets/<name>.md`, and copies the
+source to `static/dl/cheatsheets/<name>.md` (served at `/dl/cheatsheets/<name>.md`).
 
 - `build.list: never` keeps cheat sheets **out of the homepage feed** (they're
   reached via the course table, not browsed).
 - CSS for rendered tables/code is appended in `assets/css/extended/custom.css`
   (`.post-content table { overflow-x:auto }` etc. for wide tables on mobile).
-- There are **no cheat sheet PDFs** anymore (the old `static/.../cheatsheets/*.pdf`
-  were removed, and the table links to pages).
+- There are **no cheat sheet PDFs** anymore; the table links to pages, and each page
+  offers the raw markdown as a download.
 
 **Cheat sheet style guide (all sheets follow this):**
 1. Line 1 = `# <Plain Topic Title>` (becomes the page title).
@@ -126,22 +137,27 @@ matter (`title`, `ShowToc`, `build.list: never`) and writes
 - Deploy a deck:
   ```bash
   cp ~/Downloads/NN_name.pdf \
-     ~/Cloud/OFFICIAL_ETHICAL_HACKING/dcelik.net/static/teaching/offensive-cybersecurity/ws2026/slides/NN_name.pdf
+     ~/projects/offensive-cybersecurity/dcelik.net/static/teaching/offensive-cybersecurity/ws2026/slides/NN_name.pdf
   ```
 
 ## 7. Lab distribution (separate private labs repo)
 
-- Labs live in a **private** repo (`~/projects/ethical-hacking-labs` on the dev box):
-  base/attacker + base/lab-assistant images, `labs/<name>/` with docker-compose +
-  targets, a Makefile, legacy reference. Kept private because it holds solutions/flags.
+- Labs live in the **private** repo `offensive-security-labs`, checked out at
+  `../labs/`: base/attacker + base/lab-assistant images, `content/<name>/` with
+  docker-compose + targets, a Makefile, grading tooling. Kept private because it holds
+  solutions/flags. Its `CLAUDE.md` is the full instructor reference.
+- `make release TAG=ws2026` (in the labs repo) copies the `RELEASED` labs' compose files
+  and `manage.sh` into this repo's `static/dl/ws2026/`. Commit + push here to deploy.
 - Images published to **Docker Hub** under namespace `dc3lik/`, image names use an
   `osl-` prefix, tagged via `${TAG}` (the cohort tag).
-- Students get a **`manage.sh`** wrapper (served from `static/.../dl/ws2026/`) that
+- Students get a **`manage.sh`** wrapper (served at `/dl/ws2026/manage.sh`) that
   fetches per-lab `docker-compose.yml` files on demand, plus one `.env` with
-  `TAG=` / `STUDENT_ID=`.
-- Tutor session time is picked via a self-hosted poll (Rallly); exam admission is
-  5-of-6 units, write-ups graded on engagement/coverage (not flag count), with an
-  oral spot-check backstop.
+  `TAG=` / `STUDENT_ID=`. Flags are per student: `DC{md5(identifier + matrikelnummer)}`.
+- Tutor sessions: Mondays and Tuesdays 13:00 to 14:00, drop-in on the student Discord.
+- Exam admission: 5 of 6 writeup units (`recon`, `web-part1`, `web-part2`,
+  `public-passwords`, `lpe`, `pivoting`). A unit passes on completeness (>= 90% of
+  objectives with the correct per-student flag), reasoning and presentation. The
+  student-facing rules are on the Exam Admission page.
 
 ## 8. Conventions & preferences
 
@@ -156,24 +172,21 @@ matter (`title`, `ShowToc`, `build.list: never`) and writes
 - Prefer no em dashes / host prefixes when asked; `manage.sh` served clean of
   trailing whitespace (`sed -i 's/[[:space:]]*$//'`).
 
-## 9. Status (as of 2026-10-18)
+## 9. Status (as of 2026-11-14)
 
 **Done:**
 - Site live at dcelik.net, mail preserved, HTTPS working.
-- Cheat sheets converted to rendered HTML pages; all 7 existing sheets
-  (02, 03, 04, 05, 06, 08, 09) unified to the style guide in §5.
-- Slide decks reviewed/corrected through 09 (pivoting). 09 includes an `ssh -J`
-  (ProxyJump) slide; the one real bug (a `-L` that should be `-R`) is fixed.
+- All slide decks 00 to 09 are published.
+- All 8 cheat sheets (02 to 09) are published as rendered pages with a raw `.md` download.
+- Labs released on the course page: bash, recon, web, public-exploits, passwords.
+  LPE and pivoting compose files are already published but their links stay hidden
+  (`released: false`) until the matching session. The web2 lab is retired for now.
+- Exam page live: dates (05.03.2027, resit 02.04.2027), format, practice exam PDF.
 
 **Pending / next:**
-- Publish the unified cheat sheets: overwrite `cheatsheets-src/` and run
-  `publish-cheatsheet.sh` for each (loop in §5).
-- Flip `released: true` / `cheatsheet: true` per session in `_index.md` as content
-  goes live.
-- **07 LPE** deck + cheat sheet not yet produced. Web-frameworks (optional lab #10)
-  not yet done.
-- A few cosmetic slide typos remain in earlier decks (tracked separately).
-- Optional: give each rendered cheat sheet page a small polish pass if needed.
+- Flip `released: true` for LPE and Pivoting as those sessions arrive.
+- Homepage + About + Privacy page (brief: `../dcelik-homepage-brief.md`) is implemented
+  on branch `worktree-homepage-about`, awaiting review before merging to main.
 
 ## 10. How to resume
 
