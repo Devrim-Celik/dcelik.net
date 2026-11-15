@@ -65,6 +65,19 @@ curl -fsSL https://dcelik.net/dl/tmux.conf -o ~/.tmux.conf
 ```
 This only affects tmux on your VM and is entirely optional.
 
+## Optional: notes and copy and paste
+Both of these make writing your [submissions](../exam-admission/) much easier.
+
+**Take notes while you work.** Paste commands and their output into your notes as you go; the writeup is then mostly a matter of cleaning up. Kali ships with CherryTree, and Obsidian is a good alternative.
+
+**Copy and paste between your computer and the Kali VM.** In VirtualBox, with the VM running, enable **Devices > Shared Clipboard > Bidirectional** (to keep it, set it under **Settings > General > Advanced > Shared Clipboard**). This needs the VirtualBox Guest Additions, which the prebuilt Kali image normally includes. If copying still does not work, install them and reboot:
+```bash
+# kali
+sudo apt install -y virtualbox-guest-x11
+sudo reboot
+```
+In UTM (Apple Silicon), clipboard sharing needs the SPICE agent in the VM: `sudo apt install -y spice-vdagent`, then reboot.
+
 ## Apple Silicon Macs
 Macs with an Apple chip (M1, M2, M3, M4) cannot use VirtualBox for these labs: VirtualBox on Apple Silicon only runs ARM guests, while the prebuilt Kali image above is x86-64. Use the path below instead. Everything else stays the same afterwards: you still run a Kali VM, start labs with `manage.sh`, and SSH into the attacker container.
 

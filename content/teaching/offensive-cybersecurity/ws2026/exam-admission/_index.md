@@ -24,11 +24,38 @@ All deadlines are **23:55** on the stated day. You complete **any 5 of these 6**
 > The **Bash** lab and the **Web Frameworks** lab are **optional**. They are worth doing (Bash to get comfortable with the environment and the basics, Web Frameworks because it's an interesting topic), but neither is a submission and neither is required for admission.
 
 ## What a submission must show
-One Markdown document per lab, uploaded on eCampus, with one section per objective (in the order the lab-assistant lists them). It is graded on three things, and passes only if all three hold:
+One Markdown document per lab, uploaded on eCampus. The guiding principle: **a classmate who has not done the lab must be able to reproduce every flag using your document alone.** Everything below follows from that. A submission is graded on completeness, reasoning and presentation, and passes only if all three hold.
 
-1. **Completeness:** the commands and output needed to fulfil the objective, and the flag where there is one. Cover at least 90% of the lab-assistant's objectives.
-2. **Reasoning:** write it so that someone who takes the course but did not do this task can understand what you did and why. Explain the non-obvious steps, above all when an output decided your next move; skip what the lecture already covers, and mention a failed attempt only if its output led somewhere.
-3. **Presentation:** a readable document with full sentences (English or German), code and text clearly separated, and long output trimmed to the lines that matter.
+### Structure
+1. The front matter block (see [File name](#file-name) below), exactly as shown.
+2. One section per objective. All flags of one objective go into that objective's section.
+
+Follow the lab assistant's order where you can. You can work on the objectives in any order, but no section may depend on something that only appears further down. If an objective needs information from another one, put the source first and point back to it, for example "the domain comes from `info.txt`, see SMB".
+
+### Completeness
+- Every command needed to reach each flag, in the order you ran them. If a step is missing, nobody can reproduce it.
+- The flag itself, shown in the output line where it appears.
+- At least 90% of the lab assistant's objectives.
+
+### Reasoning
+- Say what you do and why: what you expect a command to show, and what the output actually tells you.
+- Explain the output that matters, above all when it decides your next step.
+- Skip what the lecture already covered (tool options, basic concepts), and leave out attempts that led nowhere. Mention a failed attempt only if its output pointed you somewhere.
+
+### Presentation
+- Full sentences, English or German. Short bullet points are fine where they stay readable.
+- Every command in a code block, with its output directly below it. Mark commands with `$` so command and output are easy to tell apart.
+- Trim the output to the lines that matter, and use `...` for cut parts. Never retype, reconstruct or annotate output inside a code block; point to the important line in the text instead.
+- For web labs, copy the relevant requests and responses from Burp as text into code blocks (in Repeater: select the raw request or response and copy it). Trim them to the lines that matter, for example the request line, the changed parameters, and the part of the response with the result. No screenshots.
+- A writeup without code blocks or without output does not pass Presentation.
+
+A full example for the optional Bash lab: [example writeup](example-bash/). For taking notes while you work, see the [Environment Setup](../setup/#optional-notes-and-copy-and-paste).
+
+### Common mistakes
+- Exporting from Word, LibreOffice or Google Docs: it escapes Markdown characters and breaks headings, code blocks and the front matter. Write the `.md` file directly in a text editor and check it in a Markdown preview before uploading.
+- Submitting a raw terminal log, or prose with commands in quotes, instead of a writeup.
+- Showing only the flag instead of the output line it appears in.
+- A table of all flags at the end is not necessary. Showing each flag in its own section is enough, and expected.
 
 Flags are individual to your Matrikelnummer, so a copied writeup shows the wrong flags.
 
@@ -53,3 +80,8 @@ matrik: <your Matrikelnummer>
 ```
 
 Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Your name comes from the file name, so it does not need to be repeated inside the document.
+
+## Use of AI
+AI tools are allowed as a learning aid: to explain a concept, a tool or an error message, or to help you when you are stuck. You may also use them to improve the wording of text you wrote yourself.
+
+They must not write the writeup for you. If a writeup reads as generated or copied, it does not pass. Signs include instructions or placeholders left in the text, explanations that miss the topic or don't make sense, and output that was invented or does not match the box.
