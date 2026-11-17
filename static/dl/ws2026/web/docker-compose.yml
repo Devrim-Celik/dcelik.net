@@ -39,7 +39,7 @@ services:
     volumes:
       - assistant-keys:/etc/ssh/host-keys
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "22"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/22"]
       interval: 5s
       timeout: 3s
       retries: 5
