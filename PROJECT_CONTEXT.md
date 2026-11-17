@@ -44,11 +44,14 @@ dcelik.net/
 │   └── css/extended/custom.css      # terminal/green theme (dark #0d1117, green #3fb950, mono headings)
 ├── cheatsheets-src/                 # AUTHORING SOURCE for cheat sheets (markdown)
 ├── content/
+│   ├── _index.md, privacy.md        # plain homepage, privacy page (linked in the footer)
+│   ├── about.md                     # parked: draft: true, menu entry commented out in hugo.toml
 │   └── teaching/offensive-cybersecurity/ws2026/
 │       ├── _index.md                # edition page: sessions front matter + {{< sessions >}}
 │       ├── setup/                   # Environment Setup guide
 │       ├── lab-guide/               # Lab Guide
-│       ├── exam-admission/          # submission rules, deadlines, grading criteria, report template
+│       ├── exam-admission/          # submission rules, grading criteria, use of AI
+│       │   └── example-bash.md      # rendered example writeup (raw copy in static/dl/examples/)
 │       ├── exam/                    # Final exam: format, dates, practice exam PDF
 │       └── cheatsheets/             # RENDERED cheat sheet pages (generated, see §5)
 │           ├── _index.md
@@ -66,7 +69,8 @@ dcelik.net/
 │   │   └── slides/NN_name.pdf       # slide decks (PDF, exported from Google Slides)
 │   ├── dl/ws2026/                   # lab distribution: manage.sh + <lab>/docker-compose.yml (from make release)
 │   ├── dl/cheatsheets/<name>.md     # raw cheat sheet copies (written by publish-cheatsheet.sh)
-│   ├── dl/tmux.conf                 # attacker tmux config
+│   ├── dl/tmux.conf                 # attacker tmux config (copy of labs/base/attacker/resources/tmux.conf; keep equal)
+│   ├── dl/examples/                 # downloadable example writeup(s)
 │   └── img/                         # setup/lab-guide diagrams
 └── themes/                          # PaperMod (submodule, never edited)
 ```
@@ -172,7 +176,7 @@ source to `static/dl/cheatsheets/<name>.md` (served at `/dl/cheatsheets/<name>.m
 - Prefer no em dashes / host prefixes when asked; `manage.sh` served clean of
   trailing whitespace (`sed -i 's/[[:space:]]*$//'`).
 
-## 9. Status (as of 2026-11-14)
+## 9. Status (as of 2026-11-17)
 
 **Done:**
 - Site live at dcelik.net, mail preserved, HTTPS working.
@@ -182,11 +186,18 @@ source to `static/dl/cheatsheets/<name>.md` (served at `/dl/cheatsheets/<name>.m
   LPE and pivoting compose files are already published but their links stay hidden
   (`released: false`) until the matching session. The web2 lab is retired for now.
 - Exam page live: dates (05.03.2027, resit 02.04.2027), format, practice exam PDF.
+- Homepage is plain (title `dcelik.net`, no profile mode), Privacy page + footer link; About is
+  parked as a draft.
+- Exam Admission explains what a writeup must show (structure, code blocks + output, Burp
+  requests as text, common mistakes, use of AI) and links a rendered Bash example writeup.
+- Setup has an "Optional: notes and copy and paste" section (CherryTree/Obsidian, VirtualBox
+  shared clipboard, UTM spice-vdagent).
+- Web cheat sheet notes that Firefox does not proxy `localhost` (allow_hijacking_localhost or
+  Burp's browser).
 
 **Pending / next:**
 - Flip `released: true` for LPE and Pivoting as those sessions arrive.
-- Homepage + About + Privacy page (brief: `../dcelik-homepage-brief.md`) is implemented
-  on branch `worktree-homepage-about`, awaiting review before merging to main.
+- Decide whether the writeup front matter (`lab`, `matrik`) stays; the file name carries both.
 
 ## 10. How to resume
 
