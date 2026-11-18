@@ -47,6 +47,7 @@ Follow the lab assistant's order where you can. You can work on the objectives i
 - Say what you do and why: what you expect a command to show, and what the output actually tells you.
 - Explain the output that matters, above all when it decides your next step.
 - Skip what the lecture already covered (tool options, basic concepts), and leave out attempts that led nowhere. Mention a failed attempt only if its output pointed you somewhere.
+- If you use a technique the lecture did not cover, explain in a sentence or two why it works.
 
 ### Presentation
 - Full sentences, English or German. Short bullet points are fine where they stay readable.
@@ -63,6 +64,7 @@ A full example for the optional Bash lab: [example writeup](example-bash/). For 
 - Showing only the flag instead of the output line it appears in.
 - Submitting a PDF or a Word/LibreOffice file: we check flags with a script that reads Markdown only.
 - Very long writeups are hard to follow: show only the steps that lead to a flag and trim output to what matters.
+- Heavy formatting: bold labels on every line, arrows and symbols instead of sentences. It makes the text harder to read, not easier.
 - A table of all flags at the end is not necessary. Showing each flag in its own section is enough, and expected.
 
 Flags are individual to your Matrikelnummer, so a copied writeup shows the wrong flags.
@@ -92,13 +94,14 @@ Keep the `---` block at the very top exactly as shown: it lets us check your fla
 ## Use of AI
 You may use AI tools, also to help you write the writeup. Two conditions:
 
-1. **You do the lab yourself.** Every command and every output in your writeup comes from your own terminal.
+1. **You do the lab yourself.** Every command and every output in your writeup comes from your own terminal. Letting an AI agent run commands against the lab for you does not count as doing it yourself.
 2. **AI must not make the writeup worse.** You are responsible for every sentence, so read what comes back and fix it before you submit.
 
 A writeup does not pass if it contains, for example:
 - leftover prompts, instructions or placeholders such as `[TODO: paste output here]`
-- output that does not match the box, or that was retyped or reconstructed instead of copied
+- output or statements about the box that do not match it, or output that was retyped or reconstructed instead of copied
 - steps that are described but never shown
 - text that contradicts your own commands, misses the point, or does not make sense
+- general sections that say nothing about this lab, such as a methodology summary or a list of tricks you did not use
 
-A polished writing style alone is not a problem. If we are unsure, we may ask you to explain a step of your writeup.
+A polished writing style alone is not a problem. If we are unsure, we may ask you to explain a step of your writeup. A step you cannot explain counts as not done.
