@@ -55,6 +55,8 @@ A full example for the optional Bash lab: [example writeup](example-bash/). For 
 - Exporting from Word, LibreOffice or Google Docs: it escapes Markdown characters and breaks headings, code blocks and the front matter. Write the `.md` file directly in a text editor and check it in a Markdown preview before uploading.
 - Submitting a raw terminal log, or prose with commands in quotes, instead of a writeup.
 - Showing only the flag instead of the output line it appears in.
+- Submitting a PDF or a Word/LibreOffice file: we check flags with a script that reads Markdown only.
+- Very long writeups are hard to follow: show only the steps that lead to a flag and trim output to what matters.
 - A table of all flags at the end is not necessary. Showing each flag in its own section is enough, and expected.
 
 Flags are individual to your Matrikelnummer, so a copied writeup shows the wrong flags.
@@ -79,9 +81,18 @@ matrik: <your Matrikelnummer>
 ## <next objective>
 ```
 
-Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Your name comes from the file name, so it does not need to be repeated inside the document.
+Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Use your own Matrikelnummer in `manage.sh`: flags generated with any other number are not valid. Your name comes from the file name, so it does not need to be repeated inside the document.
 
 ## Use of AI
-AI tools are allowed as a learning aid: to explain a concept, a tool or an error message, or to help you when you are stuck. You may also use them to improve the wording of text you wrote yourself.
+You may use AI tools, also to help you write the writeup. Two conditions:
 
-They must not write the writeup for you. If a writeup reads as generated or copied, it does not pass. Signs include instructions or placeholders left in the text, explanations that miss the topic or don't make sense, and output that was invented or does not match the box.
+1. **You do the lab yourself.** Every command and every output in your writeup comes from your own terminal.
+2. **AI must not make the writeup worse.** You are responsible for every sentence, so read what comes back and fix it before you submit.
+
+A writeup does not pass if it contains, for example:
+- leftover prompts, instructions or placeholders such as `[TODO: paste output here]`
+- output that does not match the box, or that was retyped or reconstructed instead of copied
+- steps that are described but never shown
+- text that contradicts your own commands, misses the point, or does not make sense
+
+A polished writing style alone is not a problem. If we are unsure, we may ask you to explain a step of your writeup.
