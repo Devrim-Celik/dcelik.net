@@ -26,6 +26,11 @@ All deadlines are **23:55** on the stated day. You complete **any 5 of these 6**
 ## What a submission must show
 One Markdown document per lab, uploaded on eCampus. The guiding principle: **a classmate who has not done the lab must be able to reproduce every flag using your document alone.** Everything below follows from that. A submission is graded on completeness, reasoning and presentation, and passes only if all three hold.
 
+Each criterion checks something different, and all three count equally:
+- **Completeness** shows that you did the lab and understood each step.
+- **Reasoning** shows that you can explain what you learned to someone who reads your writeup.
+- **Presentation** is how technical work is delivered in this field. A pentest report or a writeup is judged by how clearly it reads, so we take it as seriously as the other two.
+
 ### Structure
 1. The front matter block (see [File name](#file-name) below), exactly as shown.
 2. One section per objective. All flags of one objective go into that objective's section.
@@ -34,6 +39,7 @@ Follow the lab assistant's order where you can. You can work on the objectives i
 
 ### Completeness
 - Every command needed to reach each flag, in the order you ran them. If a step is missing, nobody can reproduce it.
+- If the lab needs a port scan, show the scan and every open port it found, not only the ports that led to a flag.
 - The flag itself, shown in the output line where it appears.
 - At least 90% of the lab assistant's objectives.
 
