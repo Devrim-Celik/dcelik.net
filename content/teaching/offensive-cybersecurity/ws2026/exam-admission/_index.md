@@ -24,7 +24,9 @@ All deadlines are **23:55** on the stated day. You complete **any 5 of these 6**
 > The **Bash** lab and the **Web Frameworks** lab are **optional**. They are worth doing (Bash to get comfortable with the environment and the basics, Web Frameworks because it's an interesting topic), but neither is a submission and neither is required for admission.
 
 ## What a submission must show
-One Markdown document per lab, uploaded on eCampus. The guiding principle: **a classmate who has not done the lab must be able to reproduce every flag using your document alone.** Everything below follows from that. A submission is graded on completeness, reasoning and presentation, and passes only if all three hold.
+> **Imagine a classmate who has not done the lab sitting in front of the box with your writeup. They should be able to repeat every step and see what came back and why you went on. Their time is limited, though, so show what they need for that and cut the rest.**
+
+Everything below follows from that. One Markdown document per lab, uploaded on eCampus. A submission is graded on completeness, reasoning and presentation, and passes only if all three hold.
 
 Each criterion checks something different, and all three count equally:
 - **Completeness** shows that you did the lab and understood each step.
