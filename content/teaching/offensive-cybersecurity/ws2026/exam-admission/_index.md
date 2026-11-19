@@ -13,9 +13,9 @@ Most submissions are a single lab. Two are exceptions: the Web lab is large, so 
 | # | Submission | Covers | Lab(s) to run | Deadline |
 |---|---|---|---|---|
 | 1 | Recon | reconnaissance | `recon` | 11 Nov 2026 |
-| 2 | Web, part 1 | file inclusion, file upload | *not yet released* | 25 Nov 2026 |
-| 3 | Web, part 2 | command injection, SQL injection | *not yet released* | 9 Dec 2026 |
-| 4 | Public Exploits + Passwords | both labs | *not yet released* | 23 Dec 2026 |
+| 2 | Web, part 1 | file inclusion, file upload | `web` | 25 Nov 2026 |
+| 3 | Web, part 2 | command injection, SQL injection | `web` | 9 Dec 2026 |
+| 4 | Public Exploits + Passwords | both labs | `public-exploits`, `passwords` | 23 Dec 2026 |
 | 5 | LPE | Linux privilege escalation | *not yet released* | 13 Jan 2027 |
 | 6 | Pivoting | pivoting | *not yet released* | 20 Jan 2027 |
 
