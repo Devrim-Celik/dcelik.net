@@ -56,7 +56,11 @@ Follow the lab assistant's order where you can. You can work on the objectives i
 - For web labs, copy the relevant requests and responses from Burp as text into code blocks (in Repeater: select the raw request or response and copy it). Trim them to the lines that matter, for example the request line, the changed parameters, and the part of the response with the result. No screenshots.
 - A writeup without code blocks or without output does not pass Presentation.
 
-A full example for the optional Bash lab: [example writeup](example-bash/). For taking notes while you work, see the [Environment Setup](../setup/#optional-notes-and-copy-and-paste).
+Two examples written to these rules:
+- [Bash lab](example-bash/): the basic form, short sections with command, output and a sentence of reasoning.
+- [A fictional web box](example-web/): a port scan, Burp requests and responses as text, and steps that build on each other.
+
+For taking notes while you work, see the [Environment Setup](../setup/#optional-notes-and-copy-and-paste).
 
 ### Common mistakes
 - Exporting from Word, LibreOffice or Google Docs: it escapes Markdown characters and breaks headings, code blocks and the front matter. Write the `.md` file directly in a text editor and check it in a Markdown preview before uploading.
@@ -79,6 +83,7 @@ where `<labname>` is one of `recon`, `web-part1`, `web-part2`, `public-passwords
 ```markdown
 ---
 lab: <labname>
+name: <first name> <family name>
 matrik: <your Matrikelnummer>
 ---
 
@@ -89,7 +94,7 @@ matrik: <your Matrikelnummer>
 ## <next objective>
 ```
 
-Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Use your own Matrikelnummer in `manage.sh`: flags generated with any other number are not valid. Your name comes from the file name, so it does not need to be repeated inside the document.
+Keep the `---` block at the very top exactly as shown: it lets us check your flags automatically. `lab` must be one of the `<labname>` values above, `name` is your full name, and `matrik` must be the same Matrikelnummer you entered in `manage.sh` (it is what generated your flags), with no spaces. Use your own Matrikelnummer in `manage.sh`: flags generated with any other number are not valid.
 
 ## Use of AI
 You may use AI tools, also to help you write the writeup. Two conditions:

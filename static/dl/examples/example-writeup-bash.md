@@ -1,17 +1,16 @@
 ---
 lab: bash
+name: Max Mustermann
 matrik: 1234567
 ---
 
 # bash writeup
-
-All challenges run on the target `bash-trainer`. I connect from the attacker system with
-`ssh challenge01@bash-trainer` (password `challenge01`). Each challenge yields the password for
-the next account, so every section starts with an SSH login as the next user.
+All challenges run on the target `bash-trainer`. I connected from the attacker system with
+`ssh challenge01@bash-trainer` (password `challenge01`). Every challenge gives the password for the
+next account, so each section starts with an SSH login as the next user.
 
 ## Challenge 01
-
-In a new home directory, the first step is to look at what is there.
+First I looked at what is in the home directory:
 
 ```
 $ ls
@@ -21,14 +20,14 @@ dFf5bU8kS7u3
 ```
 
 ## Challenge 02
-
 ```
 $ ls
 -
 ```
 
-The file is called `-`. Passed directly to `cat`, it is read as "standard input" instead of a
-file name. Referring to it with a relative path (`./`, the current directory) avoids that.
+The file is called `-`. When I give that to `cat` directly, it waits for input instead of opening
+the file, because `-` means "standard input" to most commands. With `./` in front it is clearly a
+file name:
 
 ```
 $ cat ./-
@@ -36,7 +35,6 @@ PYzH65290r8K
 ```
 
 ## Challenge 03
-
 ```
 $ ls
 checkmeout
@@ -44,8 +42,8 @@ $ cd checkmeout; ls
 'read me.txt'
 ```
 
-The file name contains a space, so `cat read me.txt` would look for two files. Quoting the name
-passes it as one argument.
+There is a space in the name, so `cat read me.txt` would look for two files, `read` and `me.txt`.
+With quotes it stays one name:
 
 ```
 $ cat "read me.txt"
@@ -53,14 +51,13 @@ nrAq8XczhT91
 ```
 
 ## Challenge 04
-
 ```
 $ ls
 $ ls -a
 .  ..  .bash_logout  .bashrc  .cache  .profile  .readme.txt
 ```
 
-The home directory looks empty, but `ls -a` also lists hidden files (names starting with `.`).
+`ls` showed nothing at all, but a file starting with a dot is hidden, and `ls -a` lists those too.
 
 ```
 $ cat .readme.txt
@@ -68,7 +65,6 @@ U918O5QfIrKp
 ```
 
 ## Challenge 05
-
 ```
 $ ls | head -3
 file000.txt
@@ -76,8 +72,9 @@ file001.txt
 file002.txt
 ```
 
-There are 1000 files, and opening a few with `cat` shows only unreadable binary data. `file`
-identifies the type of each file by its content; filtering for `ASCII` finds the one text file.
+There are 1000 files. The few I opened with `cat` were just binary garbage, and I didn't want to go
+through all of them. `file` tells me what kind of data each file really contains, so I let it check
+all of them and kept only the text ones:
 
 ```
 $ file * | grep ASCII
@@ -87,13 +84,12 @@ PuCseJB159sK
 ```
 
 ## Challenge 06
-
 ```
 $ cat readme.txt
 NDh0aGxoNzRLQ2VoCg==
 ```
 
-The character set and the `==` padding at the end are typical for base64.
+The `==` at the end looks like base64 padding, so I decoded it:
 
 ```
 $ cat readme.txt | base64 -d
@@ -101,15 +97,14 @@ $ cat readme.txt | base64 -d
 ```
 
 ## Challenge 07
-
 ```
 $ cat readme.txt
 4CCM90Md5phv
 ```
 
-Decoding this with `base64 -d` only prints unreadable bytes, so it is not base64. The text has
-the same length and character mix as the previous passwords, which suggests a simple letter
-substitution such as ROT13. `tr` shifts every letter by 13 places.
+I tried `base64 -d` again first, but that only gave unreadable bytes. The text has the same length
+and mix of letters and digits as the passwords before, so I guessed that only the letters were
+shifted, like ROT13. `tr` can do that by mapping every letter 13 places further:
 
 ```
 $ cat readme.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
@@ -117,7 +112,6 @@ $ cat readme.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 
 ## Challenge 08
-
 ```
 $ ls
 doubles.txt
@@ -127,8 +121,8 @@ SHnitZ
 j7t8ei
 ```
 
-The name `doubles.txt` hints that every line appears twice except one. `uniq -u` prints only
-lines that occur once, but it compares neighbouring lines, so the file has to be sorted first.
+From the name I guessed that every line is in there twice except one. `uniq -u` prints the lines
+that are not repeated, but it only compares neighbouring lines, so I sorted the file first:
 
 ```
 $ sort doubles.txt | uniq -u
@@ -136,14 +130,13 @@ r3vP3WP4k1xH
 ```
 
 ## Challenge 09
-
 ```
 $ ls
 dir01  dir02  dir03  ...  dir30
 ```
 
-The home directory holds 30 directories with 30 subdirectories each. Instead of opening them one
-by one, `find` searches the whole tree for regular files.
+30 directories with 30 subdirectories each is too many to open by hand. `find` searches the whole
+tree for me:
 
 ```
 $ find . -type f -name readme.txt
@@ -153,7 +146,6 @@ $ cat ./dir07/dir25/readme.txt
 ```
 
 ## Challenge 10
-
 ```
 $ ls
 pack.zip
@@ -162,8 +154,8 @@ Archive:  pack.zip
   inflating: pack.tar.gz
 ```
 
-The zip contains a gzip compressed tar archive. `tar` unpacks it with `x` (extract), `z` (gzip)
-and `f` (the archive file).
+Inside the zip is another archive, a gzip compressed tar. `tar xzf` unpacks it (`x` extract,
+`z` gzip, `f` the file):
 
 ```
 $ tar xzf pack.tar.gz
@@ -172,14 +164,13 @@ m3Jor7AeSC6C
 ```
 
 ## Challenge 11
-
 ```
 $ ls -a
 .  ..  .bash_logout  .bashrc  .cache  .profile
 ```
 
-There are no files to read this time, not even hidden ones. Besides files, a shell also carries
-information in its environment variables, which `env` lists.
+No files this time, not even hidden ones. Apart from files, the shell also keeps information in
+environment variables, so I listed them with `env` and searched for anything called flag:
 
 ```
 $ env | grep FLAG
@@ -187,15 +178,14 @@ FLAG=8g5C6IrGtn8v
 ```
 
 ## Challenge 12
-
 ```
 $ ls
 id_rsa
 ```
 
-The file is an SSH private key, and according to the lab assistant it belongs to `challenge13`.
-SSH refuses to use a private key that other users can read, so the permissions have to be
-reduced to owner only (`600`) first. Since the key is on this machine, I log in to `localhost`.
+That is an SSH private key, and the lab assistant says it belongs to `challenge13`. SSH refuses a
+private key that other users can read, so I limited it to the owner (`600`) first. The key is on
+this machine already, so I logged in to `localhost`:
 
 ```
 $ chmod 600 id_rsa
@@ -205,9 +195,8 @@ challenge13@bash-trainer:~$
 ```
 
 ## Challenge 13
-
-The lab assistant mentions a web server on this machine on port 8080. `curl` sends a GET request
-to its root path.
+The lab assistant mentions a web server on port 8080 on this machine. I asked for its start page
+with `curl`:
 
 ```
 $ curl http://localhost:8080/
@@ -215,9 +204,8 @@ $ curl http://localhost:8080/
 ```
 
 ## Challenge 14
-
-The lab assistant mentions a service on port 1337 that answers the command `GETFLAG`. `nc` opens a
-plain TCP connection, and I type the command once the welcome message appears.
+This time there is a service on port 1337 that answers to `GETFLAG`. With `nc` I opened a plain
+connection, waited for the welcome message and typed the command:
 
 ```
 $ nc localhost 1337
@@ -227,16 +215,15 @@ FLAG: e8DD40zEI428
 ```
 
 ## Challenge 15
-
 ```
 $ ls
 bigfile.txt
 ```
 
-The file has thousands of lines, far too many to read. According to the lab assistant, the flag is on the line that starts
-with `ethicalhacking`, so `grep` can pick it out.
+The file has thousands of lines, way too many to read. The lab assistant says the flag is on the
+line starting with `ethicalhacking`, so I let `grep` find it:
 
 ```
 $ grep ethicalhacking bigfile.txt
-ethicalhacking DC{...}
+ethicalhacking DC{5fbbe94af518bd69ca793a58ad1451f2}
 ```

@@ -51,7 +51,8 @@ dcelik.net/
 │       ├── setup/                   # Environment Setup guide
 │       ├── lab-guide/               # Lab Guide
 │       ├── exam-admission/          # submission rules, grading criteria, use of AI
-│       │   └── example-bash.md      # rendered example writeup (raw copy in static/dl/examples/)
+│       │   ├── example-bash.md      # rendered example writeup (raw copy in static/dl/examples/)
+│       │   └── example-web.md       # rendered example for a fictional web box (same setup)
 │       ├── exam/                    # Final exam: format, dates, practice exam PDF
 │       └── cheatsheets/             # RENDERED cheat sheet pages (generated, see §5)
 │           ├── _index.md
@@ -189,7 +190,7 @@ source to `static/dl/cheatsheets/<name>.md` (served at `/dl/cheatsheets/<name>.m
 - Homepage is plain (title `dcelik.net`, no profile mode), Privacy page + footer link; About is
   parked as a draft.
 - Exam Admission explains what a writeup must show (structure, code blocks + output, Burp
-  requests as text, common mistakes, use of AI) and links a rendered Bash example writeup.
+  requests as text, common mistakes, use of AI) and links two rendered example writeups (Bash lab, fictional web box).
 - Setup has an "Optional: notes and copy and paste" section (CherryTree/Obsidian, VirtualBox
   shared clipboard, UTM spice-vdagent).
 - Web cheat sheet notes that Firefox does not proxy `localhost` (allow_hijacking_localhost or
@@ -197,7 +198,6 @@ source to `static/dl/cheatsheets/<name>.md` (served at `/dl/cheatsheets/<name>.m
 
 **Pending / next:**
 - Flip `released: true` for LPE and Pivoting as those sessions arrive.
-- Decide whether the writeup front matter (`lab`, `matrik`) stays; the file name carries both.
 
 ## 10. How to resume
 
